@@ -10,41 +10,105 @@
 
 module.exports = function(grunt) {
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
+    var path = require('path'),
+        options;
 
-  grunt.registerMultiTask('pngmin', 'Your task description goes here.', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
-    });
+    /**
+     * Optimizes one picture
+     * @param  {Object}   file     With src and dest properties
+     * @param  {Function} callback Callback function
+     */
+    function optimize(file, callback) {
+        var dest = file.dest,
+            src = file.src;
 
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
+        if(!grunt.file.isDir(dest)) {
+            grunt.file.mkdir(dest);
         }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
+        if(grunt.file.isDir(dest) && grunt.file.exists(dest)) {
+            dest = path.join(dest, path.basename(src));
 
-      // Handle options.
-      src += options.punctuation;
+            grunt.file.copy(src, dest);
 
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
+            var args = [
+                    '--ext=' + options.ext,
+                    '--speed=' + options.speed
+                ];
 
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+            if(options.force) { args.push('--force'); }
+            if(options.iebug) { args.push('--iebug'); }
+            if(options.transbug) { args.push('--transbug'); }
+
+            args.push(options.colors, '--', dest);
+
+            grunt.util.spawn({
+                cmd: options.binary,
+                args: args
+            }, function(error, result, code) {
+                if(error) {
+                    callback(error);
+                }
+                else {
+                    var oldFile = grunt.file.read(src),
+                    newFile = grunt.file.read(dest),
+                    savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
+
+                    grunt.log.writeln('Optimized ' + src.cyan + ' -> ' + dest.cyan + ' [saved ' + savings + ' %]');
+
+                    callback();
+                }
+
+            });
+        }
+    }
+
+    // Please see the Grunt documentation for more information regarding task
+    // creation: http://gruntjs.com/creating-tasks
+
+    grunt.registerMultiTask('pngmin', 'Optimize png images with pngquant.', function() {
+        var done = this.async(),
+            iterator = 0,
+            amount = this.files.length;
+
+        // Merge task-specific and/or target-specific options with these defaults.
+        options = this.options({
+            binary: 'bin/pngquant',
+            colors: 256,
+            force: false,
+            ext: '.png',
+            speed: 3,
+            iebug: false,
+            transbug: false
+        });
+
+        grunt.verbose.writeflags(options, 'Options');
+
+        // Iterate over all specified file groups.
+        this.files.forEach(function(f) {
+            // Concat specified files.
+            var files = f.src.filter(function(filepath) {
+                // Warn on and remove invalid source files (if nonull was set).
+                if (!grunt.file.exists(filepath)) {
+                    grunt.log.warn('Source file "' + filepath + '" not found.');
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }).map(function(filepath) {
+                return {
+                    src: filepath,
+                    dest: f.dest
+                };
+            });
+
+            grunt.util.async.forEach(files, optimize, function(err) {
+                iterator++;
+                if(iterator === amount) {
+                    done(err);
+                }
+            });
+        });
     });
-  });
 
 };

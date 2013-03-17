@@ -33,9 +33,12 @@ module.exports = function(grunt) {
       default_options: {
         options: {
         },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
+        files: [
+          {
+            src: 'test/fixtures/pngquant-logo.png',
+            dest: 'tmp/'
+          }
+        ],
       },
       custom_options: {
         options: {
@@ -65,7 +68,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'pngmin', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'pngmin:default_options', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);
