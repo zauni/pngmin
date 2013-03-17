@@ -28,21 +28,25 @@ exports.pngmin = {
     done();
   },
   default_options: function(test) {
-    test.expect(1);
+    test.expect(2);
 
-    var actual = grunt.file.read('tmp/pngquant-logo.png');
+    var actual = grunt.file.read('tmp/pngquant-logo-fs8.png');
     var expected = grunt.file.read('test/expected/pngquant-logo-fs8.png');
     test.equal(actual.length, expected.length, 'should be the same size as the test file.');
 
-    test.done();
-  }/*,
-  custom_options: function(test) {
-    test.expect(1);
-
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+    test.ok(!grunt.file.exists('tmp/pngquant-logo.png'));
 
     test.done();
-  },*/
+  },
+  ext_test: function(test) {
+    test.expect(2);
+
+    var actual = grunt.file.read('tmp/pngquant-logo-custom.png');
+    var expected = grunt.file.read('test/expected/pngquant-logo-fs8.png');
+    test.equal(actual, expected, 'sould be the same size as the test file.');
+
+    test.ok(!grunt.file.exists('tmp/pngquant-logo.png'));
+
+    test.done();
+  }
 };

@@ -38,16 +38,18 @@ module.exports = function(grunt) {
             src: 'test/fixtures/pngquant-logo.png',
             dest: 'tmp/'
           }
-        ],
+        ]
       },
-      custom_options: {
+      ext_test: {
         options: {
-          separator: ': ',
-          punctuation: ' !!!',
+          ext: '-custom.png'
         },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
+        files: [
+          {
+            src: 'test/fixtures/pngquant-logo.png',
+            dest: 'tmp/'
+          }
+        ]
       },
     },
 
@@ -68,7 +70,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'pngmin:default_options', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'pngmin', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);

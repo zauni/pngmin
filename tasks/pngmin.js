@@ -25,17 +25,19 @@ module.exports = function(grunt) {
         if(!grunt.file.isDir(dest)) {
             grunt.file.mkdir(dest);
         }
-        if(grunt.file.isDir(dest) && grunt.file.exists(dest)) {
+        if(grunt.file.exists(dest) && grunt.file.isDir(dest)) {
+            var realDest = path.join(dest, path.basename(src, path.extname(src)) + options.ext);
+
             dest = path.join(dest, path.basename(src));
 
             grunt.file.copy(src, dest);
 
             var args = [
-                    '--force',
                     '--ext=' + options.ext,
                     '--speed=' + options.speed
                 ];
 
+            if(options.force) { args.push('--force'); }
             if(options.iebug) { args.push('--iebug'); }
             if(options.transbug) { args.push('--transbug'); }
 
@@ -50,10 +52,14 @@ module.exports = function(grunt) {
                 }
                 else {
                     var oldFile = grunt.file.read(src),
-                    newFile = grunt.file.read(dest),
+                    newFile = grunt.file.read(realDest),
                     savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
 
-                    grunt.log.writeln('Optimized ' + src.cyan + ' -> ' + dest.cyan + ' [saved ' + savings + ' %]');
+                    if(realDest !== dest) {
+                        grunt.file.delete(dest);
+                    }
+
+                    grunt.log.writeln('Optimized ' + src.cyan + ' -> ' + realDest.cyan + ' [saved ' + savings + ' %]');
 
                     callback();
                 }
@@ -73,8 +79,9 @@ module.exports = function(grunt) {
         // Merge task-specific and/or target-specific options with these defaults.
         options = this.options({
             binary: 'bin/pngquant',
+            force: false,
             colors: 256,
-            ext: '.png',
+            ext: '-fs8.png',
             speed: 3,
             iebug: false,
             transbug: false
