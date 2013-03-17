@@ -17,6 +17,8 @@ One the plugin has been installed, it may be enabled inside your Gruntfile with 
 grunt.loadNpmTasks('grunt-pngmin');
 ```
 
+You also have to download pngquant from their website: (http://pngquant.org). Default the task will search for the binary in `bin` folder.
+
 ## The "pngmin" task
 
 ### Overview
