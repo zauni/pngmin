@@ -31,11 +31,11 @@ module.exports = function(grunt) {
             grunt.file.copy(src, dest);
 
             var args = [
+                    '--force',
                     '--ext=' + options.ext,
                     '--speed=' + options.speed
                 ];
 
-            if(options.force) { args.push('--force'); }
             if(options.iebug) { args.push('--iebug'); }
             if(options.transbug) { args.push('--transbug'); }
 
@@ -74,7 +74,6 @@ module.exports = function(grunt) {
         options = this.options({
             binary: 'bin/pngquant',
             colors: 256,
-            force: false,
             ext: '.png',
             speed: 3,
             iebug: false,
