@@ -51,6 +51,18 @@ module.exports = function(grunt) {
           }
         ]
       },
+      force_test: {
+        options: {
+          ext: '.png',
+          force: true
+        },
+        files: [
+          {
+            src: 'test/fixtures/pngquant-logo.png',
+            dest: 'tmp/force/'
+          }
+        ]
+      }
     },
 
     // Unit tests.
