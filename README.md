@@ -45,6 +45,12 @@ Default value: `'bin/pngquant'`
 
 The pngquant executable which will be spawned.
 
+#### options.concurrency
+Type: `Number`
+Default value: `4`
+
+How many executables will be spawned in parallel.
+
 #### options.colors
 Type: `Number`
 Default value: `256`

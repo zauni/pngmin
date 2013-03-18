@@ -57,5 +57,14 @@ exports.pngmin = {
     test.equal(actual, expected, 'sould be the same size as the test file.');
 
     test.done();
+  },
+  multiple_test: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.expand('tmp/multiple/*.png');
+    var expected = 10;
+    test.equal(actual.length, expected, 'should be 10 images');
+
+    test.done();
   }
 };

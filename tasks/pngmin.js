@@ -18,9 +18,9 @@ module.exports = function(grunt) {
      * @param  {Object}   file     With src and dest properties
      * @param  {Function} callback Callback function
      */
-    function optimize(file, callback) {
-        var dest = file.dest,
-            src = file.src;
+    function optimize(task, callback) {
+        var dest = task.dest,
+            src = task.src;
 
         if(!grunt.file.isDir(dest)) {
             grunt.file.mkdir(dest);
@@ -79,9 +79,10 @@ module.exports = function(grunt) {
         // Merge task-specific and/or target-specific options with these defaults.
         options = this.options({
             binary: 'bin/pngquant',
-            force: false,
+            concurrency: 4,
             colors: 256,
             ext: '-fs8.png',
+            force: false,
             speed: 3,
             iebug: false,
             transbug: false
@@ -108,12 +109,12 @@ module.exports = function(grunt) {
                 };
             });
 
-            grunt.util.async.forEach(files, optimize, function(err) {
-                iterator++;
-                if(iterator === amount) {
-                    done(err);
-                }
-            });
+            var queue = grunt.util.async.queue(optimize, options.concurrency);
+
+            queue.drain = function() {
+                done();
+            };
+            queue.push(files);
         });
     });
 

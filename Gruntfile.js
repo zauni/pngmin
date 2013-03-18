@@ -62,6 +62,18 @@ module.exports = function(grunt) {
             dest: 'tmp/force/'
           }
         ]
+      },
+      multiple_test: {
+        options: {
+          ext: '.png',
+          force: true
+        },
+        files: [
+          {
+            src: 'test/fixtures/multiple/*.png',
+            dest: 'tmp/multiple/'
+          }
+        ]
       }
     },
 
