@@ -66,5 +66,18 @@ exports.pngmin = {
     test.equal(actual.length, expected, 'should be 10 images');
 
     test.done();
+  },
+  subdir_test: function(test) {
+    test.expect(4);
+
+    var actual = grunt.file.expand('tmp/subdir_test/*.png');
+    var expected = 1;
+    test.equal(actual.length, expected, 'should be just 1 image');
+    test.ok(grunt.file.isFile(actual[0]), 'should be a file and not a directory!');
+
+    test.ok(grunt.file.isDir('tmp/subdir_test/subdir1'), 'there should be subdir1 folder');
+    test.ok(grunt.file.isDir('tmp/subdir_test/subdir2'), 'there should be subdir2 folder');
+
+    test.done();
   }
 };

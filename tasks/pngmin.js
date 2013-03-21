@@ -18,63 +18,59 @@ module.exports = function(grunt) {
      * @param  {Object}   file     With src and dest properties
      * @param  {Function} callback Callback function
      */
-    function optimize(task, callback) {
-        var dest = task.dest,
-            src = task.src;
+    function optimize(file, callback) {
+        var dest = file.dest,
+            src = file.src;
 
-        if(!grunt.file.isDir(dest)) {
-            grunt.file.mkdir(dest);
-        }
-        if(grunt.file.exists(dest) && grunt.file.isDir(dest)) {
-            var realDest = path.join(dest, path.basename(src, path.extname(src)) + options.ext);
+        var realDest = path.join(dest, path.basename(src, path.extname(src)) + options.ext);
 
-            dest = path.join(dest, path.basename(src));
+        dest = path.join(dest, path.basename(src));
 
-            grunt.file.copy(src, dest);
+        // copy method creates all folders
+        grunt.file.copy(src, dest);
 
-            var args = [
-                    '--ext=' + options.ext,
-                    '--speed=' + options.speed
-                ];
+        var args = [
+                '--ext=' + options.ext,
+                '--speed=' + options.speed
+            ];
 
-            if(options.force) { args.push('--force'); }
-            if(options.iebug) { args.push('--iebug'); }
-            if(options.transbug) { args.push('--transbug'); }
+        if(options.force) { args.push('--force'); }
+        if(options.iebug) { args.push('--iebug'); }
+        if(options.transbug) { args.push('--transbug'); }
 
-            args.push(options.colors, '--', dest);
+        args.push(options.colors, '--', dest);
 
-            grunt.util.spawn({
-                cmd: options.binary,
-                args: args
-            }, function(error, result, code) {
-                if(error) {
-                    callback(error);
-                }
-                else {
-                    var oldFile = grunt.file.read(src),
-                    newFile = grunt.file.read(realDest),
-                    savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
+        grunt.util.spawn({
+            cmd: options.binary,
+            args: args
+        }, function(error, result, code) {
+            if(error) {
+                callback(error);
+            }
+            else {
+                var oldFile = grunt.file.read(src),
+                newFile = grunt.file.read(realDest),
+                savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
 
-                    if(realDest !== dest) {
-                        grunt.file.delete(dest);
-                    }
-
-                    grunt.log.writeln('Optimized ' + src.cyan + ' -> ' + realDest.cyan + ' [saved ' + savings + ' %]');
-
-                    callback();
+                if(realDest !== dest) {
+                    grunt.file.delete(dest);
                 }
 
-            });
-        }
+                grunt.log.writeln('Optimized ' + src.cyan + ' -> ' + realDest.cyan + ' [saved ' + savings + ' %]');
+
+                callback();
+            }
+
+        });
     }
 
-    // Please see the Grunt documentation for more information regarding task
-    // creation: http://gruntjs.com/creating-tasks
+
+
+    // pngmin multi task
 
     grunt.registerMultiTask('pngmin', 'Optimize png images with pngquant.', function() {
         var done = this.async(),
-            iterator = 0,
-            amount = this.files.length;
+            queue;
 
         // Merge task-specific and/or target-specific options with these defaults.
         options = this.options({
@@ -90,7 +86,7 @@ module.exports = function(grunt) {
 
         grunt.verbose.writeflags(options, 'Options');
 
-        var queue = grunt.util.async.queue(optimize, options.concurrency);
+        queue = grunt.util.async.queue(optimize, options.concurrency);
 
         queue.drain = function() {
             done();
@@ -111,7 +107,8 @@ module.exports = function(grunt) {
             }).map(function(filepath) {
                 return {
                     src: filepath,
-                    dest: f.dest
+                    // if files object is built dynamically, the dest property isn't a directory
+                    dest: f.orig.expand ? path.dirname(f.dest) : f.dest
                 };
             });
 

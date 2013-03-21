@@ -151,10 +151,36 @@ grunt.initConfig({
 });
 ```
 
+#### Example which is preserving the subfolder structure
+In this example all images in the folder `path/to/images/` and its subfolders will be optimized and copied to `dest` while preserving the directory structure.
+See http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically for more options.
+
+```js
+grunt.initConfig({
+  pngmin: {
+    default_options: {
+      options: {
+        ext: '.png',
+        force: true
+      },
+      files: [
+        {
+          expand: true, // required option
+          src: ['**/*.png'],
+          cwd: 'path/to/images/', // required option
+          dest: 'dest/'
+        }
+      ]
+    }
+  }
+});
+```
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.3.0: Corrected behaviour if files object is built dynamically (http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically)
 - 0.2.1: Just one queue is created
 - 0.2.0: The pngquant executable gets queued to avoid a problem with to many spawned executables
 - 0.1.0: Initial release

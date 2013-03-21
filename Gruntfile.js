@@ -74,6 +74,20 @@ module.exports = function(grunt) {
             dest: 'tmp/multiple/'
           }
         ]
+      },
+      subdir_test: {
+        options: {
+          ext: '.png',
+          force: true
+        },
+        files: [
+          {
+            expand: true,
+            src: ['**/*.png'],
+            cwd: 'test/fixtures/subdir_test/',
+            dest: 'tmp/subdir_test/'
+          }
+        ]
       }
     },
 
