@@ -90,6 +90,12 @@ module.exports = function(grunt) {
 
         grunt.verbose.writeflags(options, 'Options');
 
+        var queue = grunt.util.async.queue(optimize, options.concurrency);
+
+        queue.drain = function() {
+            done();
+        };
+
         // Iterate over all specified file groups.
         this.files.forEach(function(f) {
             // Concat specified files.
@@ -109,11 +115,6 @@ module.exports = function(grunt) {
                 };
             });
 
-            var queue = grunt.util.async.queue(optimize, options.concurrency);
-
-            queue.drain = function() {
-                done();
-            };
             queue.push(files);
         });
     });
