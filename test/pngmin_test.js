@@ -79,5 +79,22 @@ exports.pngmin = {
     test.ok(grunt.file.isDir('tmp/subdir_test/subdir2'), 'there should be subdir2 folder');
 
     test.done();
+  },
+  increase_test: function(test) {
+    test.expect(3);
+
+    var optimized = grunt.file.read('tmp/increase_test/glyphicons-halflings.png');
+    var nonOptimized = grunt.file.read('test/fixtures/increase_test/glyphicons-halflings.png');
+    test.ok(optimized.length < nonOptimized.length, 'optimized image should be smaller');
+
+    // the white icons are getting bigger if one tries to optimize them with pngquant
+    // so pngmin should skip this file and just copy the source file to the destination
+    test.ok(grunt.file.exists('tmp/increase_test/glyphicons-halflings-white.png'), 'file should be copied to the destination even if it wasn\'t optimized');
+    var skippedFile = grunt.file.read('tmp/increase_test/glyphicons-halflings-white.png');
+    var original = grunt.file.read('test/fixtures/increase_test/glyphicons-halflings-white.png');
+
+    test.equal(skippedFile.length, original.length, 'files should be the same size!');
+
+    test.done();
   }
 };

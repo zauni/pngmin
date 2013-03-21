@@ -56,7 +56,13 @@ module.exports = function(grunt) {
                     grunt.file.delete(dest);
                 }
 
-                grunt.log.writeln('Optimized ' + src.cyan + ' -> ' + realDest.cyan + ' [saved ' + savings + ' %]');
+                if(savings >= 0) {
+                    grunt.log.writeln('Optimized ' + src.cyan + ' -> ' + realDest.cyan + ' [saved ' + savings + ' %]');
+                }
+                else {
+                    grunt.file.copy(src, realDest);
+                    grunt.log.writeln('Optimization would increase file size by ' + (savings * -1) + ' % so optimization was skipped on file ' + src.yellow);
+                }
 
                 callback();
             }
