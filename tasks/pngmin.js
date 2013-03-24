@@ -11,6 +11,7 @@
 module.exports = function(grunt) {
 
     var path = require('path'),
+        tmp  = require('tmp'),
         options;
 
     /**
@@ -19,42 +20,45 @@ module.exports = function(grunt) {
      * @param  {Function} callback Callback function
      */
     function optimize(file, callback) {
-        var dest = file.dest,
-            src = file.src;
+        var src = file.src,
+            realDest = path.join(file.dest, path.basename(src, path.extname(src)) + options.ext);
 
-        var realDest = path.join(dest, path.basename(src, path.extname(src)) + options.ext);
-
-        dest = path.join(dest, path.basename(src));
-
-        // copy method creates all folders
-        grunt.file.copy(src, dest);
-
-        var args = [
-                '--ext=' + options.ext,
-                '--speed=' + options.speed
-            ];
-
-        if(options.force) { args.push('--force'); }
-        if(options.iebug) { args.push('--iebug'); }
-        if(options.transbug) { args.push('--transbug'); }
-
-        args.push(options.colors, '--', dest);
-
-        grunt.util.spawn({
-            cmd: options.binary,
-            args: args
-        }, function(error, result, code) {
+        // optimize a temporary file
+        tmp.tmpName({ postfix: '.png' }, function(error, tmpDest) {
             if(error) {
                 callback(error);
+                return;
             }
-            else {
-                var oldFile = grunt.file.read(src),
-                newFile = grunt.file.read(realDest),
-                savings = Math.floor(( oldFile.length - newFile.length ) / oldFile.length * 100 );
 
-                if(realDest !== dest) {
-                    grunt.file.delete(dest);
+            grunt.file.copy(src, tmpDest);
+
+            var args = [];
+
+            if(options.iebug) { args.push('--iebug'); }
+            if(options.transbug) { args.push('--transbug'); }
+
+            args.push('--ext=.png', '--force', '--speed=' + options.speed, options.colors, '--', tmpDest);
+
+            grunt.util.spawn({
+                cmd: options.binary,
+                args: args
+            }, function(error, result, code) {
+                if(error) {
+                    callback(error);
+                    return;
                 }
+
+                if(!options.force && grunt.file.exists(realDest)) {
+                    grunt.log.writeln('Optimization skipped on ' + src.cyan + ' because it exists in destination. (force option is false!)');
+                    callback();
+                }
+
+                var oldFile = grunt.file.read(src),
+                    newFile = grunt.file.read(tmpDest),
+                    savings = Math.floor((oldFile.length - newFile.length) / oldFile.length * 100);
+
+                grunt.file.copy(tmpDest, realDest);
+                grunt.file.delete(tmpDest, {force: true});
 
                 if(savings >= 0) {
                     grunt.log.writeln('Optimized ' + src.cyan + ' -> ' + realDest.cyan + ' [saved ' + savings + ' %]');
@@ -65,8 +69,7 @@ module.exports = function(grunt) {
                 }
 
                 callback();
-            }
-
+            });
         });
     }
 

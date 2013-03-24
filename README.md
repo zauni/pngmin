@@ -67,7 +67,7 @@ The file extension after the quantization.
 Type: `Boolean`
 Default value: `false`
 
-Should existing files be overwritten? If you set the ext option to `'.png'` you have to set the force option to `true`.
+Should existing files be overwritten by the optimized version? Be careful with this option if you need the original files!
 
 #### options.speed
 Type: `Number`
@@ -90,7 +90,7 @@ Transparent color will be placed at the end of the palette.
 ### Usage Examples
 
 #### Default Options
-In this example the `image.png` will be copied to `dest` folder and gets optimized and renamed to `image-fs8.png`.
+In this example `image.png` will be optimized, copied to `dest` folder and renamed to `image-fs8.png`.
 
 ```js
 grunt.initConfig({
@@ -110,14 +110,14 @@ grunt.initConfig({
 ```
 
 #### Custom Options
-In this example the `image.png` will be copied to `dest` folder and gets optimized and renamed to `image-custom.png`.
+In this example `image.png` will be optimized and copied to `dest` folder.
 
 ```js
 grunt.initConfig({
   pngmin: {
     default_options: {
       options: {
-        ext: '-custom.png'
+        ext: '.png'
       },
       files: [
         {
@@ -130,7 +130,7 @@ grunt.initConfig({
 });
 ```
 
-In this example the `image.png` will be copied to `dest` folder and gets optimized and will not be renamed!
+In this example `image.png` gets overwritten by the optimized version, so use force option carefully!
 
 ```js
 grunt.initConfig({
@@ -143,7 +143,7 @@ grunt.initConfig({
       files: [
         {
           src: 'path/to/image.png',
-          dest: 'dest/'
+          dest: 'path/to/'
         }
       ]
     }
@@ -160,8 +160,7 @@ grunt.initConfig({
   pngmin: {
     default_options: {
       options: {
-        ext: '.png',
-        force: true
+        ext: '.png'
       },
       files: [
         {
@@ -180,8 +179,9 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.3.2: The force option is no longer required if '.png' is set as ext option
 - 0.3.1: If the optimization increases file size, the original file is copied to the destination
 - 0.3.0: Corrected behaviour if files object is built dynamically (http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically)
 - 0.2.1: Just one queue is created
-- 0.2.0: The pngquant executable gets queued to avoid a problem with to many spawned executables
+- 0.2.0: The pngquant executable gets queued to avoid a problem with too many spawned executables
 - 0.1.0: Initial release
