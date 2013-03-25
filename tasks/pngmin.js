@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 
     var path = require('path'),
         tmp  = require('tmp'),
+        totalPercent = [],
         options;
 
     /**
@@ -62,6 +63,7 @@ module.exports = function(grunt) {
 
                 if(savings >= 0) {
                     grunt.log.writeln('Optimized ' + src.cyan + ' -> ' + realDest.cyan + ' [saved ' + savings + ' %]');
+                    totalPercent.push(savings);
                 }
                 else {
                     grunt.file.copy(src, realDest);
@@ -93,11 +95,18 @@ module.exports = function(grunt) {
             transbug: false
         });
 
+        // reset
+        totalPercent = [];
+
         grunt.verbose.writeflags(options, 'Options');
 
         queue = grunt.util.async.queue(optimize, options.concurrency);
 
         queue.drain = function() {
+            var sum = totalPercent.reduce(function(a, b) { return a + b; }),
+                avg = Math.floor(sum / totalPercent.length);
+
+            grunt.log.writeln('Overall savings: ' + (avg + ' %').green);
             done();
         };
 

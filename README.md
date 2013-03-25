@@ -179,6 +179,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.3.3: The total savings are displayed
 - 0.3.2: The force option is no longer required if '.png' is set as ext option
 - 0.3.1: If the optimization increases file size, the original file is copied to the destination
 - 0.3.0: Corrected behaviour if files object is built dynamically (http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically)
