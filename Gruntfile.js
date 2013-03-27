@@ -34,8 +34,8 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            src: 'pngquant-logo.png',
-            cwd: 'test/fixtures/',
+            src: '*.png',
+            cwd: 'test/fixtures/force_test/',
             dest: 'tmp/force/',
             flatten: true
           }
@@ -72,7 +72,19 @@ module.exports = function(grunt) {
         },
         files: [
           {
-            src: 'tmp/force/pngquant-logo.png',
+            src: 'tmp/force/force1.png',
+            dest: 'tmp/force/'
+          }
+        ]
+      },
+      force_test2: {
+        options: {
+          ext: '.png',
+          force: false
+        },
+        files: [
+          {
+            src: 'tmp/force/force2.png',
             dest: 'tmp/force/'
           }
         ]
@@ -142,7 +154,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'normalPngminTasks', 'copy:force_test', 'pngmin:force_test', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'normalPngminTasks', 'copy:force_test', 'pngmin:force_test', 'pngmin:force_test2', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);

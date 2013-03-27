@@ -24,6 +24,13 @@ module.exports = function(grunt) {
         var src = file.src,
             realDest = path.join(file.dest, path.basename(src, path.extname(src)) + options.ext);
 
+        if(grunt.file.exists(realDest) && !options.force) {
+            grunt.log.writeln('Optimization skipped on ' + src.cyan + ' because it exists in destination. (force option is false!)');
+            totalPercent.push(0);
+            callback();
+            return;
+        }
+
         // optimize a temporary file
         tmp.tmpName({ postfix: '.png' }, function(error, tmpDest) {
             if(error) {
@@ -47,11 +54,6 @@ module.exports = function(grunt) {
                 if(error) {
                     callback(error);
                     return;
-                }
-
-                if(!options.force && grunt.file.exists(realDest)) {
-                    grunt.log.writeln('Optimization skipped on ' + src.cyan + ' because it exists in destination. (force option is false!)');
-                    callback();
                 }
 
                 var oldFile = grunt.file.read(src),
@@ -100,6 +102,7 @@ module.exports = function(grunt) {
 
         grunt.verbose.writeflags(options, 'Options');
 
+        // every file will be pushed in this queue
         queue = grunt.util.async.queue(optimize, options.concurrency);
 
         queue.drain = function() {

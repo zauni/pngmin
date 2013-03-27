@@ -50,11 +50,15 @@ exports.pngmin = {
     test.done();
   },
   force_test: function(test) {
-    test.expect(1);
+    test.expect(2);
 
-    var actual = grunt.file.read('tmp/force/pngquant-logo.png');
+    var actual = grunt.file.read('tmp/force/force1.png');
     var expected = grunt.file.read('test/expected/pngquant-logo-fs8.png');
-    test.equal(actual, expected, 'sould be the same size as the test file.');
+    test.equal(actual, expected, 'sould be the same size as the optimized file.');
+
+    actual = grunt.file.read('tmp/force/force2.png');
+    expected = grunt.file.read('test/fixtures/pngquant-logo.png');
+    test.equal(actual, expected, 'should be the same size as the non-optimized file.');
 
     test.done();
   },
