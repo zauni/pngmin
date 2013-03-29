@@ -204,6 +204,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.4.1: Gives a hint if no images were found
 - 0.4.0: Destination doesn't have to be a directory anymore
 - 0.3.4: If the `force` option is false and the file already exists at the destination pngquant doesn't get spawned
 - 0.3.3: The total savings are displayed

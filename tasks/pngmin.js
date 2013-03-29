@@ -144,8 +144,17 @@ module.exports = function(grunt) {
                 };
             });
 
+            if(files.length === 0) {
+                grunt.log.writeln('No images were found in this path(s): ' + f.orig.src.join(', ').cyan);
+            }
+
             queue.push(files);
         });
+
+        if(queue.length() === 0) {
+            grunt.verbose.writeln('No images were found at all...');
+            done();
+        }
     });
 
 };

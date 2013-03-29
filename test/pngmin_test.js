@@ -109,5 +109,18 @@ exports.pngmin = {
     test.ok(grunt.file.exists(expected) && grunt.file.isFile(expected), 'Image should be at the destination, even if we didn\'t use a directory as dest option!');
 
     test.done();
+  },
+  exists_test: function(test) {
+    test.expect(2);
+
+    var actual = grunt.file.read('tmp/exists_test/pngquant-logo.png');
+    var expected = grunt.file.read('test/expected/pngquant-logo-fs8.png');
+    test.equal(actual, expected, 'there should be one optimized image.');
+
+    actual = grunt.file.expand('tmp/exists_test/*.png');
+    expected = 1;
+    test.equal(actual.length, expected, 'should be just 1 image');
+
+    test.done();
   }
 };
