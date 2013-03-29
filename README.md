@@ -95,9 +95,8 @@ In this example `image.png` will be optimized, copied to `dest` folder and renam
 ```js
 grunt.initConfig({
   pngmin: {
-    default_options: {
-      options: {
-      },
+    compile: {
+      options: {},
       files: [
         {
           src: 'path/to/image.png',
@@ -115,7 +114,7 @@ In this example `image.png` will be optimized and copied to `dest` folder.
 ```js
 grunt.initConfig({
   pngmin: {
-    default_options: {
+    compile: {
       options: {
         ext: '.png'
       },
@@ -135,7 +134,7 @@ In this example `image.png` gets overwritten by the optimized version, so use fo
 ```js
 grunt.initConfig({
   pngmin: {
-    default_options: {
+    compile: {
       options: {
         ext: '.png',
         force: true
@@ -158,7 +157,7 @@ See http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically f
 ```js
 grunt.initConfig({
   pngmin: {
-    default_options: {
+    compile: {
       options: {
         ext: '.png'
       },
@@ -175,10 +174,37 @@ grunt.initConfig({
 });
 ```
 
+#### Complex example
+This is a complex example with a lot of options set:
+
+```js
+grunt.initConfig({
+  pngmin: {
+    compile: {
+      options: {
+        binary: '/bin/pngquant', // specify pngquant path
+        concurrency: 8,          // specify how many exucutables get spawned in parallel
+        colors: 128,             // reduce colors to 128
+        ext: '.png',             // use .png as extension for the optimized files
+        speed: 10,               // pngquant should be as fast as possible
+        iebug: true              // optimize image for use in Internet Explorer 6
+      },
+      files: [
+        {
+          src: 'path/to/images/*.png',
+          dest: 'dest/'
+        }
+      ]
+    }
+  }
+});
+```
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.4.0: Destination doesn't have to be a directory anymore
 - 0.3.4: If the `force` option is false and the file already exists at the destination pngquant doesn't get spawned
 - 0.3.3: The total savings are displayed
 - 0.3.2: The force option is no longer required if '.png' is set as ext option

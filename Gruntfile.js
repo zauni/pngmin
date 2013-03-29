@@ -123,6 +123,13 @@ module.exports = function(grunt) {
             dest: 'tmp/increase_test/'
           }
         ]
+      },
+      dest_test: {
+        options: {
+          ext: '.png'
+        },
+        src: 'test/fixtures/pngquant-logo.png',
+        dest: 'tmp/dest_test/pngquant-logo.png'
       }
     },
 
@@ -149,7 +156,8 @@ module.exports = function(grunt) {
     'pngmin:ext_test',
     'pngmin:multiple_test',
     'pngmin:subdir_test',
-    'pngmin:increase_test'
+    'pngmin:increase_test',
+    'pngmin:dest_test'
   ]);
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this

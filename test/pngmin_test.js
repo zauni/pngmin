@@ -100,5 +100,14 @@ exports.pngmin = {
     test.equal(skippedFile.length, original.length, 'files should be the same size!');
 
     test.done();
+  },
+  dest_test: function(test) {
+    test.expect(1);
+
+    var expected = 'tmp/dest_test/pngquant-logo.png';
+
+    test.ok(grunt.file.exists(expected) && grunt.file.isFile(expected), 'Image should be at the destination, even if we didn\'t use a directory as dest option!');
+
+    test.done();
   }
 };

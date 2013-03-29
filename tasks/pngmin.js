@@ -115,6 +115,18 @@ module.exports = function(grunt) {
 
         // Iterate over all specified file groups.
         this.files.forEach(function(f) {
+            var dest = f.dest;
+
+            // if dest points to a file, or the files object is built dynamically
+            // the dest property is transformed to a directory, because we expect that
+            if(
+                (grunt.file.exists(f.dest) && grunt.file.isFile(f.dest)) ||
+                path.extname(f.dest) === '.png' ||
+                f.orig.expand
+            ) {
+                dest = path.dirname(f.dest);
+            }
+
             // Concat specified files.
             var files = f.src.filter(function(filepath) {
                 // Warn on and remove invalid source files (if nonull was set).
@@ -128,8 +140,7 @@ module.exports = function(grunt) {
             }).map(function(filepath) {
                 return {
                     src: filepath,
-                    // if files object is built dynamically, the dest property isn't a directory
-                    dest: f.orig.expand ? path.dirname(f.dest) : f.dest
+                    dest: dest
                 };
             });
 
