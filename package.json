@@ -1,7 +1,7 @@
 {
   "name": "grunt-pngmin",
   "description": "Grunt plugin to compress png images with pngquant.",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "homepage": "https://github.com/zauni/pngmin",
   "author": {
     "name": "Matthias Zaunseder",
@@ -42,6 +42,7 @@
     "pngquant"
   ],
   "dependencies": {
-    "tmp": "0.0.16"
+    "tmp": "0.0.16",
+    "filesize": "~1.9.0"
   }
 }
