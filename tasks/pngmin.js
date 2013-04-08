@@ -73,6 +73,7 @@ module.exports = function(grunt) {
                 else {
                     grunt.file.copy(src, realDest);
                     grunt.log.writeln('Optimization would increase file size by ' + (savings * -1) + ' % so optimization was skipped on file ' + src.yellow);
+                    totalPercent.push(0);
                 }
 
                 callback();
