@@ -17,7 +17,7 @@ One the plugin has been installed, it may be enabled inside your Gruntfile with 
 grunt.loadNpmTasks('grunt-pngmin');
 ```
 
-You also have to download pngquant from their website: (http://pngquant.org). Default the task will search for the binary in `bin` folder.
+You also have to download pngquant from their website: [pngquant.org](http://pngquant.org). The task will search the pngquant binary in the `PATH` or as a fallback in `bin` folder in your project, but you can also set the path to the binary with the `binary` option.
 
 ## The "pngmin" task
 
@@ -41,9 +41,9 @@ grunt.initConfig({
 
 #### options.binary
 Type: `String`
-Default value: `'bin/pngquant'`
+Default value: `'pngquant'` in your `PATH` or `'bin/pngquant'`
 
-The pngquant executable which will be spawned.
+The pngquant executable which will be spawned. If the pngquant binary is not found in `PATH` the default fallback is `'bin/pngquant'`, but this option has always precedence.
 
 #### options.concurrency
 Type: `Number`
@@ -182,17 +182,21 @@ grunt.initConfig({
   pngmin: {
     compile: {
       options: {
-        binary: '/bin/pngquant', // specify pngquant path
-        concurrency: 8,          // specify how many exucutables get spawned in parallel
-        colors: 128,             // reduce colors to 128
-        ext: '.png',             // use .png as extension for the optimized files
-        speed: 10,               // pngquant should be as fast as possible
-        iebug: true              // optimize image for use in Internet Explorer 6
+        binary: 'path/to/pngquant', // specify pngquant path
+        concurrency: 8,             // specify how many exucutables get spawned in parallel
+        colors: 128,                // reduce colors to 128
+        ext: '.png',                // use .png as extension for the optimized files
+        speed: 10,                  // pngquant should be as fast as possible
+        iebug: true                 // optimize image for use in Internet Explorer 6
       },
       files: [
         {
           src: 'path/to/images/*.png',
           dest: 'dest/'
+        },
+        {
+          src: 'path/to/other/images/*.png',
+          dest: 'another/dest/'
         }
       ]
     }
@@ -204,6 +208,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.4.4: Uses pngquant if it's in the `PATH`, otherwise uses fallback, but options.binary has always precedence
 - 0.4.3: Fixed issue with total percent
 - 0.4.2: Filesize of old and optimized image is shown
 - 0.4.1: Gives a hint if no images were found

@@ -14,6 +14,7 @@ module.exports = function(grunt) {
         fs   = require('fs'),
         tmp  = require('tmp'),
         filesize = require('filesize'),
+        which = require('which'),
         totalPercent = [],
         options;
 
@@ -87,11 +88,18 @@ module.exports = function(grunt) {
 
     grunt.registerMultiTask('pngmin', 'Optimize png images with pngquant.', function() {
         var done = this.async(),
-            queue;
+            queue,
+            pngquant;
+
+        try {
+            pngquant = which.sync('pngquant');
+        } catch(ex) {
+            pngquant = 'bin/pngquant';
+        }
 
         // Merge task-specific and/or target-specific options with these defaults.
         options = this.options({
-            binary: 'bin/pngquant',
+            binary: pngquant,
             concurrency: 4,
             colors: 256,
             ext: '-fs8.png',
