@@ -43,7 +43,7 @@ exports.pngmin = {
 
     var actual = grunt.file.read('tmp/pngquant-logo-custom.png');
     var expected = grunt.file.read('test/expected/pngquant-logo-fs8.png');
-    test.equal(actual, expected, 'sould be the same size as the test file.');
+    test.equal(actual.length, expected.length, 'sould be the same size as the test file.');
 
     test.ok(!grunt.file.exists('tmp/pngquant-logo.png'));
 
@@ -54,7 +54,7 @@ exports.pngmin = {
 
     var actual = grunt.file.read('tmp/force/force1.png');
     var expected = grunt.file.read('test/expected/pngquant-logo-fs8.png');
-    test.equal(actual, expected, 'sould be the same size as the optimized file.');
+    test.equal(actual.length, expected.length, 'sould be the same size as the optimized file.');
 
     actual = grunt.file.read('tmp/force/force2.png');
     expected = grunt.file.read('test/fixtures/pngquant-logo.png');
@@ -115,7 +115,7 @@ exports.pngmin = {
 
     var actual = grunt.file.read('tmp/exists_test/pngquant-logo.png');
     var expected = grunt.file.read('test/expected/pngquant-logo-fs8.png');
-    test.equal(actual, expected, 'there should be one optimized image.');
+    test.equal(actual.length, expected.length, 'there should be one optimized image.');
 
     actual = grunt.file.expand('tmp/exists_test/*.png');
     expected = 1;
