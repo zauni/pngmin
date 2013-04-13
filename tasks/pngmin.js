@@ -15,7 +15,8 @@ module.exports = function(grunt) {
         tmp  = require('tmp'),
         filesize = require('filesize'),
         which = require('which'),
-        totalPercent = [],
+        totalPercent,
+        totalSize,
         options;
 
     /**
@@ -70,6 +71,7 @@ module.exports = function(grunt) {
                     grunt.log.writeln('Optimized ' + realDest.cyan +
                                       ' [saved ' + savings + ' % - ' + filesize(oldFile, 1, false) + ' → ' + filesize(newFile, 1, false) + ']');
                     totalPercent.push(savings);
+                    totalSize += oldFile - newFile;
                 }
                 else {
                     grunt.file.copy(src, realDest);
@@ -111,6 +113,7 @@ module.exports = function(grunt) {
 
         // reset
         totalPercent = [];
+        totalSize = 0;
 
         grunt.verbose.writeflags(options, 'Options');
 
@@ -121,7 +124,7 @@ module.exports = function(grunt) {
             var sum = totalPercent.reduce(function(a, b) { return a + b; }),
                 avg = Math.floor(sum / totalPercent.length);
 
-            grunt.log.writeln('Overall savings: ' + (avg + ' %').green);
+            grunt.log.writeln('Overall savings: ' + (avg + ' %').green + ' | ' + filesize(totalSize, 1, false).green);
             done();
         };
 

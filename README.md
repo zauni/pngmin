@@ -208,6 +208,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.4.5: Shows overall saved bytes
 - 0.4.4: Uses pngquant if it's in the `PATH`, otherwise uses fallback, but options.binary has always precedence
 - 0.4.3: Fixed issue with total percent
 - 0.4.2: Filesize of old and optimized image is shown
