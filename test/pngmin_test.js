@@ -122,5 +122,14 @@ exports.pngmin = {
     test.equal(actual.length, expected, 'should be just 1 image');
 
     test.done();
+  },
+  quality_test: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('tmp/quality_test/pngquant-logo-qual1.png');
+    var already_optimized = grunt.file.read('tmp/pngquant-logo-fs8.png');
+    test.ok(actual.length < already_optimized.length, 'lower quality should result in even smaller images!');
+
+    test.done();
   }
 };

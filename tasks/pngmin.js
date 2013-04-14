@@ -15,6 +15,7 @@ module.exports = function(grunt) {
         tmp  = require('tmp'),
         filesize = require('filesize'),
         which = require('which'),
+        _ = grunt.util._,
         totalPercent,
         totalSize,
         options;
@@ -44,10 +45,22 @@ module.exports = function(grunt) {
 
             grunt.file.copy(src, tmpDest);
 
-            var args = [];
+            var args = [],
+                qual = options.quality;
 
             if(options.iebug) { args.push('--iebug'); }
             if(options.transbug) { args.push('--transbug'); }
+            if(qual != null) {
+                if(_.isString(qual)) {
+                    args.push('--quality=' + qual);
+                }
+                else if(_.isObject(qual) && qual.min && qual.max && _.isNumber(qual.min) && _.isNumber(qual.max)) {
+                    args.push('--quality=' + qual.min + '-' + qual.max);
+                }
+                else if(_.isArray(qual) && _.isNumber(qual[0]) && _.isNumber(qual[1])) {
+                    args.push('--quality=' + qual[0] + '-' + qual[1]);
+                }
+            }
 
             args.push('--ext=.png', '--force', '--speed=' + options.speed, options.colors, '--', tmpDest);
 
@@ -105,6 +118,7 @@ module.exports = function(grunt) {
             concurrency: 4,
             colors: 256,
             ext: '-fs8.png',
+            quality: null,
             force: false,
             speed: 3,
             iebug: false,

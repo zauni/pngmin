@@ -63,6 +63,20 @@ Default value: `'-fs8.png'`
 
 The file extension after the quantization.
 
+#### options.quality
+Type: `String`, `Object` or `Array`
+Default value: `null`
+
+Instructs pngquant to use the least amount of colors required to meet or exceed the max quality.
+If conversion results in quality below the min quality the image won't be saved.
+Specify quality like that:
+* String: `'min-max'`
+* Object: `{min: min, max: max}`
+* Array: `[min, max]`
+
+min and max are numbers in range 0 (worst) to 100 (perfect), similar to JPEG.
+For example as object: `{min: 60, max: 80}`.
+
 #### options.force
 Type: `Boolean`
 Default value: `false`
@@ -186,6 +200,7 @@ grunt.initConfig({
         concurrency: 8,             // specify how many exucutables get spawned in parallel
         colors: 128,                // reduce colors to 128
         ext: '.png',                // use .png as extension for the optimized files
+        quality: '65-80',           // output quality should be between 65 and 80 like jpeg quality
         speed: 10,                  // pngquant should be as fast as possible
         iebug: true                 // optimize image for use in Internet Explorer 6
       },
@@ -208,6 +223,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.5.0: Quality option of pngquant revealed to the plugin user
 - 0.4.5: Shows overall saved bytes
 - 0.4.4: Uses pngquant if it's in the `PATH`, otherwise uses fallback, but options.binary has always precedence
 - 0.4.3: Fixed issue with total percent
