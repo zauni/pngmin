@@ -54,7 +54,7 @@ module.exports = function(grunt) {
                 if(_.isString(qual)) {
                     args.push('--quality=' + qual);
                 }
-                else if(_.isObject(qual) && qual.min && qual.max && _.isNumber(qual.min) && _.isNumber(qual.max)) {
+                else if(_.isObject(qual) && _.isNumber(qual.min) && _.isNumber(qual.max)) {
                     args.push('--quality=' + qual.min + '-' + qual.max);
                 }
                 else if(_.isArray(qual) && _.isNumber(qual[0]) && _.isNumber(qual[1])) {
