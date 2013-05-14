@@ -15,6 +15,7 @@ module.exports = function(grunt) {
         tmp  = require('tmp'),
         filesize = require('filesize'),
         which = require('which'),
+        nodePngquantPath = require('node-pngquant-bin').path,
         _ = grunt.util._,
         totalPercent,
         totalSize,
@@ -106,10 +107,15 @@ module.exports = function(grunt) {
             queue,
             pngquant;
 
-        try {
-            pngquant = which.sync('pngquant');
-        } catch(ex) {
-            pngquant = 'bin/pngquant';
+        if(nodePngquantPath === null) {
+            try {
+                pngquant = which.sync('pngquant');
+            } catch(ex) {
+                pngquant = 'bin/pngquant';
+            }
+        }
+        else {
+            pngquant = nodePngquantPath;
         }
 
         // Merge task-specific and/or target-specific options with these defaults.

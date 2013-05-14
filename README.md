@@ -11,13 +11,18 @@ If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out th
 npm install grunt-pngmin --save-dev
 ```
 
-One the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
+Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
 grunt.loadNpmTasks('grunt-pngmin');
 ```
 
-You also have to download pngquant from their website: [pngquant.org](http://pngquant.org). The task will search the pngquant binary in the `PATH` or as a fallback in `bin` folder in your project, but you can also set the path to the binary with the `binary` option.
+### Linux users
+You also have to download pngquant if you are on a Linux system from their website: [pngquant.org](http://pngquant.org).
+You can put the pngquant executable either somewhere in your `PATH` or in a folder in your project.
+If you put it in a folder outside of the `PATH`, you have to specify the path to it with the `binary` option (see below).
+
+Windows and Mac OSX is supported out of the box.
 
 ## The "pngmin" task
 
@@ -43,6 +48,7 @@ grunt.initConfig({
 Type: `String`
 Default value: `'pngquant'` in your `PATH` or `'bin/pngquant'`
 
+Important for Linux users!
 The pngquant executable which will be spawned. If the pngquant binary is not found in `PATH` the default fallback is `'bin/pngquant'`, but this option has always precedence.
 
 #### options.concurrency
@@ -196,7 +202,7 @@ grunt.initConfig({
   pngmin: {
     compile: {
       options: {
-        binary: 'path/to/pngquant', // specify pngquant path
+        binary: 'path/to/pngquant', // specify pngquant path if on Linux
         concurrency: 8,             // specify how many exucutables get spawned in parallel
         colors: 128,                // reduce colors to 128
         ext: '.png',                // use .png as extension for the optimized files
@@ -223,6 +229,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.6.0: pngquant binary is now included for windows and mac users (no additional pngquant installation need)
 - 0.5.1: Fixed potential issue with quality option
 - 0.5.0: Quality option of pngquant revealed to the plugin user
 - 0.4.5: Shows overall saved bytes
