@@ -22,6 +22,12 @@ You also have to download pngquant if you are on a Linux system from their websi
 You can put the pngquant executable either somewhere in your `PATH` or in a folder in your project.
 If you put it in a folder outside of the `PATH`, you have to specify the path to it with the `binary` option (see below).
 
+If you don't do this, you will see this error:
+~~~
+Warning: Running "pngmin:dist" (pngmin) task
+Fatal error: spawn ENOENT
+~~~
+
 Windows and Mac OSX is supported out of the box.
 
 ## The "pngmin" task
