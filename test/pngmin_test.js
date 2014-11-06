@@ -124,11 +124,16 @@ exports.pngmin = {
     test.done();
   },
   quality_test: function(test) {
-    test.expect(1);
+    test.expect(2);
 
     var actual = grunt.file.read('tmp/quality_test/pngquant-logo-qual1.png');
     var already_optimized = grunt.file.read('tmp/pngquant-logo-fs8.png');
     test.ok(actual.length < already_optimized.length, 'lower quality should result in even smaller images!');
+
+    var qualityError = grunt.file.read('tmp/quality_test/haustest-qual4.png');
+    var notOptimized = grunt.file.read('test/fixtures/haustest.png');
+
+    test.ok(qualityerror.length < notOptimized.length, 'after an error with quality option, it should be optimized without quality option!');
 
     test.done();
   }

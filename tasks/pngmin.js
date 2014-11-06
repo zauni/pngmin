@@ -22,6 +22,18 @@ module.exports = function(grunt) {
         options;
 
     /**
+     * Runs pngquant binary
+     * @param  {Array}   args      Command line arguments
+     * @param  {Function} callback Callback
+     */
+    function runPngquant(args, callback) {
+        grunt.util.spawn({
+            cmd: options.binary,
+            args: args
+        }, callback);
+    }
+
+    /**
      * Optimizes one picture
      * @param  {Object}   file     With src and dest properties
      * @param  {Function} callback Callback function
@@ -47,7 +59,8 @@ module.exports = function(grunt) {
             grunt.file.copy(src, tmpDest);
 
             var args = [],
-                qual = options.quality;
+                qual = options.quality,
+                tries = 1;
 
             if(options.iebug) { args.push('--iebug'); }
             if(options.transbug) { args.push('--transbug'); }
@@ -65,10 +78,20 @@ module.exports = function(grunt) {
 
             args.push('--ext=.png', '--force', '--speed=' + options.speed, options.colors, '--', tmpDest);
 
-            grunt.util.spawn({
-                cmd: options.binary,
-                args: args
-            }, function(error, result, code) {
+            var cb = function(error, result, code) {
+                if(error && code === 99 && tries === 1) {
+                    args = _.filter(args, function(arg) {
+                        if(_.isString(arg) && arg.indexOf('--quality') === 0) {
+                            return false;
+                        }
+                        return true;
+                    });
+                    tries++;
+                    grunt.log.writeln(src.yellow + ' could not be optimized with quality option. Trying again without quality option!');
+                    runPngquant(args, cb);
+                    return;
+                }
+
                 if(error) {
                     callback(error);
                     return;
@@ -94,7 +117,9 @@ module.exports = function(grunt) {
                 }
 
                 callback();
-            });
+            };
+
+            runPngquant(args, cb);
         });
     }
 

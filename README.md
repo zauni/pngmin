@@ -235,6 +235,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.6.2: If pngquant exits with status 99, pngmin will try again without quality option (fixes #9)
 - 0.6.1: Added postinstall script to change permission on the OS X pngquant binary
 - 0.6.0: pngquant binary is now included for windows and mac users (no additional pngquant installation need)
 - 0.5.1: Fixed potential issue with quality option
