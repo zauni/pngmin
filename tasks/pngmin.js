@@ -27,6 +27,8 @@ module.exports = function(grunt) {
      * @param  {Function} callback Callback
      */
     function runPngquant(args, callback) {
+        grunt.log.debug('Trying to spawn "' + options.binary + '" with arguments: ');
+        grunt.log.debug(args.join(' '));
         grunt.util.spawn({
             cmd: options.binary,
             args: args
@@ -53,6 +55,7 @@ module.exports = function(grunt) {
         tmp.tmpName({ postfix: '.png' }, function(error, tmpDest) {
             if(error) {
                 callback(error);
+                totalPercent.push(0);
                 return;
             }
 
@@ -94,6 +97,7 @@ module.exports = function(grunt) {
 
                 if(error) {
                     callback(error);
+                    totalPercent.push(0);
                     return;
                 }
 
@@ -161,9 +165,16 @@ module.exports = function(grunt) {
         totalSize = 0;
 
         grunt.verbose.writeflags(options, 'Options');
+        
+        var queueCallback = function (error) {
+            if (typeof error === 'undefined') return;
+            grunt.log.error(error);
+        };
 
         // every file will be pushed in this queue
-        queue = grunt.util.async.queue(optimize, options.concurrency);
+        queue = grunt.util.async.queue(function (file) {
+            optimize(file, queueCallback);
+        }, options.concurrency);
 
         queue.drain = function() {
             var sum = totalPercent.reduce(function(a, b) { return a + b; }),
