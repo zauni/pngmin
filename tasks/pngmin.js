@@ -167,7 +167,9 @@ module.exports = function(grunt) {
         grunt.verbose.writeflags(options, 'Options');
         
         var queueCallback = function (error) {
-            if (typeof error === 'undefined') return;
+            if (typeof error === 'undefined') {
+                return;
+            }
             grunt.log.error(error);
         };
 
