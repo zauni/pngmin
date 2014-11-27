@@ -53,6 +53,7 @@ module.exports = function(grunt) {
         tmp.tmpName({ postfix: '.png' }, function(error, tmpDest) {
             if(error) {
                 callback(error);
+                totalPercent.push(0);
                 return;
             }
 
@@ -94,6 +95,7 @@ module.exports = function(grunt) {
 
                 if(error) {
                     callback(error);
+                    totalPercent.push(0);
                     return;
                 }
 
@@ -166,8 +168,8 @@ module.exports = function(grunt) {
         queue = grunt.util.async.queue(optimize, options.concurrency);
 
         queue.drain = function() {
-            var sum = totalPercent.reduce(function(a, b) { return a + b; }),
-                avg = Math.floor(sum / totalPercent.length);
+            var sum = totalPercent.length == 0 ? 0 : totalPercent.reduce(function(a, b) { return a + b; }),
+                avg = totalPercent.length == 0 ? 0 : Math.floor(sum / totalPercent.length);
 
             grunt.log.writeln('Overall savings: ' + (avg + ' %').green + ' | ' + filesize(totalSize, 1, false).green);
             done();
