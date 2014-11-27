@@ -27,6 +27,8 @@ module.exports = function(grunt) {
      * @param  {Function} callback Callback
      */
     function runPngquant(args, callback) {
+        grunt.log.debug('Trying to spawn "' + options.binary + '" with arguments: ');
+        grunt.log.debug(args.join(' '));
         grunt.util.spawn({
             cmd: options.binary,
             args: args
