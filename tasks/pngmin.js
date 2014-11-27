@@ -163,13 +163,20 @@ module.exports = function(grunt) {
         totalSize = 0;
 
         grunt.verbose.writeflags(options, 'Options');
+        
+        var queueCallback = function (error) {
+            if (typeof error === 'undefined') return;
+            grunt.log.error(error);
+        };
 
         // every file will be pushed in this queue
-        queue = grunt.util.async.queue(optimize, options.concurrency);
+        queue = grunt.util.async.queue(function (file) {
+            optimize(file, queueCallback);
+        }, options.concurrency);
 
         queue.drain = function() {
-            var sum = totalPercent.length == 0 ? 0 : totalPercent.reduce(function(a, b) { return a + b; }),
-                avg = totalPercent.length == 0 ? 0 : Math.floor(sum / totalPercent.length);
+            var sum = totalPercent.reduce(function(a, b) { return a + b; }),
+                avg = Math.floor(sum / totalPercent.length);
 
             grunt.log.writeln('Overall savings: ' + (avg + ' %').green + ' | ' + filesize(totalSize, 1, false).green);
             done();
