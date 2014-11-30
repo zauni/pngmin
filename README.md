@@ -235,6 +235,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.6.4: Reverted some code from 0.6.3 and fixed one unit test
 - 0.6.3: Couple of fixes to prevent the reduce errors
 - 0.6.2: If pngquant exits with status 99, pngmin will try again without quality option (fixes #9)
 - 0.6.1: Added postinstall script to change permission on the OS X pngquant binary

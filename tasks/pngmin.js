@@ -165,18 +165,9 @@ module.exports = function(grunt) {
         totalSize = 0;
 
         grunt.verbose.writeflags(options, 'Options');
-        
-        var queueCallback = function (error) {
-            if (typeof error === 'undefined') {
-                return;
-            }
-            grunt.log.error(error);
-        };
 
         // every file will be pushed in this queue
-        queue = grunt.util.async.queue(function (file) {
-            optimize(file, queueCallback);
-        }, options.concurrency);
+        queue = grunt.util.async.queue(optimize, options.concurrency);
 
         queue.drain = function() {
             var sum = totalPercent.reduce(function(a, b) { return a + b; }),
