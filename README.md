@@ -1,9 +1,9 @@
-# grunt-pngmin
+# grunt-pngmin [![Build Status](https://travis-ci.org/zauni/pngmin.svg)](https://travis-ci.org/zauni/pngmin)
 
 > Grunt plugin to compress png images with pngquant.
 
 ## Getting Started
-This plugin requires Grunt `~0.4.1`
+This plugin requires Grunt `~0.4.0`
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
@@ -17,18 +17,7 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-pngmin');
 ```
 
-### Linux users
-You also have to download pngquant if you are on a Linux system from their website: [pngquant.org](http://pngquant.org).
-You can put the pngquant executable either somewhere in your `PATH` or in a folder in your project.
-If you put it in a folder outside of the `PATH`, you have to specify the path to it with the `binary` option (see below).
-
-If you don't do this, you will see this error:
-~~~
-Warning: Running "pngmin:dist" (pngmin) task
-Fatal error: spawn ENOENT
-~~~
-
-Windows and Mac OSX is supported out of the box.
+Windows, Linux and Mac OSX is supported out of the box.
 
 ## The "pngmin" task
 
@@ -49,13 +38,6 @@ grunt.initConfig({
 ```
 
 ### Options
-
-#### options.binary
-Type: `String`
-Default value: `'pngquant'` in your `PATH` or `'bin/pngquant'`
-
-Important for Linux users!
-The pngquant executable which will be spawned. If the pngquant binary is not found in `PATH` the default fallback is `'bin/pngquant'`, but this option has always precedence.
 
 #### options.concurrency
 Type: `Number`
@@ -112,6 +94,13 @@ Type: `Boolean`
 Default value: `false`
 
 Transparent color will be placed at the end of the palette.
+
+#### options.binary
+Type: `String`
+Default value: `'pngquant'` in your `PATH` or `'bin/pngquant'`
+
+This option is just for users where the pngquant-bin package could not be installed correctly. Normally you don't need this!
+The pngquant executable which will be spawned. If the pngquant binary is not found in `PATH` the default fallback is `'bin/pngquant'`, but this option has always precedence.
 
 ### Usage Examples
 
@@ -208,7 +197,6 @@ grunt.initConfig({
   pngmin: {
     compile: {
       options: {
-        binary: 'path/to/pngquant', // specify pngquant path if on Linux
         concurrency: 8,             // specify how many exucutables get spawned in parallel
         colors: 128,                // reduce colors to 128
         ext: '.png',                // use .png as extension for the optimized files
@@ -235,6 +223,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 1.0.0: Linux support with imagemin/pngquant-bin and travis CI integration
 - 0.6.4: Reverted some code from 0.6.3 and fixed one unit test
 - 0.6.3: Couple of fixes to prevent the reduce errors
 - 0.6.2: If pngquant exits with status 99, pngmin will try again without quality option (fixes #9)
