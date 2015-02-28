@@ -125,7 +125,7 @@ exports.pngmin = {
   quality_test: function(test) {
     test.expect(2);
 
-    var actual = grunt.file.read('tmp/quality_test/pngquant-logo-qual1.png');
+    var actual = grunt.file.read('tmp/quality_test/pngquant-logo-qual2.png');
     var already_optimized = grunt.file.read('tmp/pngquant-logo-fs8.png');
     test.ok(actual.length < already_optimized.length, 'lower quality should result in even smaller images!');
 
