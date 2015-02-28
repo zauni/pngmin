@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         tmp  = require('tmp'),
         filesize = require('filesize'),
         which = require('which'),
-        nodePngquantPath = require('node-pngquant-bin').path,
+        nodePngquantPath = require('pngquant-bin').path,
         _ = grunt.util._,
         totalPercent,
         totalSize,
