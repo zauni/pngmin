@@ -108,7 +108,7 @@ module.exports = function(grunt) {
                 grunt.file.copy(tmpDest, realDest);
                 grunt.file.delete(tmpDest, {force: true});
 
-                if(savings >= 0) {
+                if(savings > 0) {
                     grunt.log.writeln('Optimized ' + realDest.cyan +
                                       ' [saved ' + savings + ' % - ' + filesize(oldFile, 1, false) + ' → ' + filesize(newFile, 1, false) + ']');
                     totalPercent.push(savings);
