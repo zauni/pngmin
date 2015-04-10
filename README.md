@@ -223,6 +223,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 1.0.2: Doesn't override images if savings were 0% (now for real, 1.0.1 was incorrect)
 - 1.0.1: Doesn't override images if savings were 0%
 - 1.0.0: Linux support with imagemin/pngquant-bin and travis CI integration
 - 0.6.4: Reverted some code from 0.6.3 and fixed one unit test

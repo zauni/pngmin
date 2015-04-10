@@ -42,9 +42,10 @@ module.exports = function(grunt) {
      */
     function optimize(file, callback) {
         var src = file.src,
-            realDest = path.join(file.dest, path.basename(src, path.extname(src)) + options.ext);
+            realDest = path.join(file.dest, path.basename(src, path.extname(src)) + options.ext),
+            realDestExists = grunt.file.exists(realDest);
 
-        if(grunt.file.exists(realDest) && !options.force) {
+        if(realDestExists && !options.force) {
             grunt.log.writeln('Optimization skipped on ' + src.cyan + ' because it exists in destination. (force option is false!)');
             totalPercent.push(0);
             callback();
@@ -90,7 +91,7 @@ module.exports = function(grunt) {
                         return true;
                     });
                     tries++;
-                    grunt.log.writeln(src.yellow + ' could not be optimized with quality option. Trying again without quality option!');
+                    grunt.log.writeln(realDest.yellow + ' could not be optimized with quality option. Trying again without quality option!');
                     runPngquant(args, cb);
                     return;
                 }
@@ -105,20 +106,24 @@ module.exports = function(grunt) {
                     newFile = fs.statSync(tmpDest).size,
                     savings = Math.floor((oldFile - newFile) / oldFile * 100);
 
-                grunt.file.copy(tmpDest, realDest);
-                grunt.file.delete(tmpDest, {force: true});
-
                 if(savings > 0) {
+                    grunt.file.copy(tmpDest, realDest);
+
                     grunt.log.writeln('Optimized ' + realDest.cyan +
                                       ' [saved ' + savings + ' % - ' + filesize(oldFile, 1, false) + ' → ' + filesize(newFile, 1, false) + ']');
                     totalPercent.push(savings);
                     totalSize += oldFile - newFile;
                 }
                 else {
-                    grunt.file.copy(src, realDest);
-                    grunt.log.writeln('Optimization would increase file size by ' + (savings * -1) + ' % so optimization was skipped on file ' + src.yellow);
+                    if(!realDestExists) {
+                        grunt.file.copy(src, realDest);
+                    }
+
+                    grunt.log.writeln('Optimization would increase file size by ' + (savings * -1) + ' % so optimization was skipped on file ' + realDest.yellow);
                     totalPercent.push(0);
                 }
+
+                grunt.file.delete(tmpDest, {force: true});
 
                 callback();
             };

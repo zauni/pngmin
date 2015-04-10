@@ -57,7 +57,7 @@ exports.pngmin = {
     test.ok(compressed.length < normal.length, 'sould be smaller than before.');
 
     var actual = grunt.file.read('tmp/force/force2.png');
-    test.equal(actual, normal, 'should be the same size as the non-optimized file.');
+    test.equal(actual.length, normal.length, 'should be the same size as the non-optimized file.');
 
     test.done();
   },
