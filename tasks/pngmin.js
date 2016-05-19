@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         tmp  = require('tmp'),
         filesize = require('filesize'),
         which = require('which'),
-        nodePngquantPath = require('pngquant-bin').path,
+        nodePngquantPath = require('pngquant-bin'),
         _ = grunt.util._,
         totalPercent,
         totalSize,
@@ -67,7 +67,6 @@ module.exports = function(grunt) {
                 tries = 1;
 
             if(options.iebug) { args.push('--iebug'); }
-            if(options.transbug) { args.push('--transbug'); }
             if(qual != null) {
                 if(_.isString(qual)) {
                     args.push('--quality=' + qual);
@@ -80,7 +79,7 @@ module.exports = function(grunt) {
                 }
             }
 
-            args.push('--ext=.png', '--force', '--speed=' + options.speed, options.colors, '--', tmpDest);
+            args.push('--ext=.png', '--force', '--speed=' + options.speed, '--', tmpDest);
 
             var cb = function(error, result, code) {
                 if(error && code === 99 && tries === 1) {
@@ -110,7 +109,7 @@ module.exports = function(grunt) {
                     grunt.file.copy(tmpDest, realDest);
 
                     grunt.log.writeln('Optimized ' + realDest.cyan +
-                                      ' [saved ' + savings + ' % - ' + filesize(oldFile, 1, false) + ' → ' + filesize(newFile, 1, false) + ']');
+                                      ' [saved ' + savings + ' % - ' + filesize(oldFile) + ' → ' + filesize(newFile) + ']');
                     totalPercent.push(savings);
                     totalSize += oldFile - newFile;
                 }
@@ -156,13 +155,11 @@ module.exports = function(grunt) {
         options = this.options({
             binary: pngquant,
             concurrency: 4,
-            colors: 256,
             ext: '-fs8.png',
             quality: null,
             force: false,
             speed: 3,
-            iebug: false,
-            transbug: false
+            iebug: false
         });
 
         // reset
@@ -175,10 +172,10 @@ module.exports = function(grunt) {
         queue = grunt.util.async.queue(optimize, options.concurrency);
 
         queue.drain = function() {
-            var sum = totalPercent.reduce(function(a, b) { return a + b; }),
-                avg = Math.floor(sum / totalPercent.length);
+            var sum = totalPercent.reduce(function(a, b) { return a + b; }, 0),
+                avg = totalPercent.length > 0 ? Math.floor(sum / totalPercent.length) : 0;
 
-            grunt.log.writeln('Overall savings: ' + (avg + ' %').green + ' | ' + filesize(totalSize, 1, false).green);
+            grunt.log.writeln('Overall savings: ' + (avg + ' %').green + ' | ' + filesize(totalSize).green);
             done();
         };
 
