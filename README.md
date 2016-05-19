@@ -45,12 +45,6 @@ Default value: `4`
 
 How many executables will be spawned in parallel.
 
-#### options.colors
-Type: `Number`
-Default value: `256`
-
-How many colors should be in the image after quantizing.
-
 #### options.ext
 Type: `String`
 Default value: `'-fs8.png'`
@@ -88,12 +82,6 @@ Type: `Boolean`
 Default value: `false`
 
 Workaround for IE6, which only displays fully opaque pixels. pngquant will make almost-opaque pixels fully opaque and will avoid creating new transparent colors.
-
-#### options.transbug
-Type: `Boolean`
-Default value: `false`
-
-Transparent color will be placed at the end of the palette.
 
 #### options.binary
 Type: `String`
@@ -198,7 +186,6 @@ grunt.initConfig({
     compile: {
       options: {
         concurrency: 8,             // specify how many exucutables get spawned in parallel
-        colors: 128,                // reduce colors to 128
         ext: '.png',                // use .png as extension for the optimized files
         quality: '65-80',           // output quality should be between 65 and 80 like jpeg quality
         speed: 10,                  // pngquant should be as fast as possible
@@ -223,6 +210,8 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 1.1.0: Updated all dependencies to the newest versions and removed colors and transbug options
+- 1.0.3: Compatibility with grunt 1.x
 - 1.0.2: Doesn't override images if savings were 0% (now for real, 1.0.1 was incorrect)
 - 1.0.1: Doesn't override images if savings were 0%
 - 1.0.0: Linux support with imagemin/pngquant-bin and travis CI integration
