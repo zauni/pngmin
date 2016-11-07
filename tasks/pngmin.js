@@ -82,7 +82,7 @@ module.exports = function(grunt) {
             args.push('--ext=.png', '--force', '--speed=' + options.speed, '--', tmpDest);
 
             var cb = function(error, result, code) {
-                if(error && code === 99 && tries === 1) {
+                if(options.retry && error && code === 99 && tries === 1) {
                     args = _.filter(args, function(arg) {
                         if(_.isString(arg) && arg.indexOf('--quality') === 0) {
                             return false;
@@ -159,7 +159,8 @@ module.exports = function(grunt) {
             quality: null,
             force: false,
             speed: 3,
-            iebug: false
+            iebug: false,
+            retry: false
         });
 
         // reset
