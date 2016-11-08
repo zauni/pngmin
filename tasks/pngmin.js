@@ -160,7 +160,7 @@ module.exports = function(grunt) {
             force: false,
             speed: 3,
             iebug: false,
-            retry: false
+            retry: true
         });
 
         // reset

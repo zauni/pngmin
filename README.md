@@ -92,7 +92,7 @@ The pngquant executable which will be spawned. If the pngquant binary is not fou
 
 #### options.retry
 Type: `Boolean`
-Default value: `false`
+Default value: `true`
 
 If pngquant exits with status 99 (ie it was not able to compress with the specified quality option), allow pngmin to try again without quality option.
 
