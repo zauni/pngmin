@@ -177,6 +177,15 @@ module.exports = function(grunt) {
         },
         src: 'test/fixtures/haustest.png',
         dest: 'tmp/quality_test/'
+      },
+      quality_test5: {
+        options: {
+          ext: '-qual5.png',
+          quality: '65-80',
+          retry: false
+        },
+        src: 'test/fixtures/haustest.png',
+        dest: 'tmp/quality_test/'
       }
     },
 
@@ -209,7 +218,8 @@ module.exports = function(grunt) {
     'pngmin:quality_test',
     'pngmin:quality_test2',
     'pngmin:quality_test3',
-    'pngmin:quality_test4'
+    'pngmin:quality_test4',
+    'pngmin:quality_test5'
   ]);
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this

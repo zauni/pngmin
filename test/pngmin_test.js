@@ -123,7 +123,7 @@ exports.pngmin = {
     test.done();
   },
   quality_test: function(test) {
-    test.expect(2);
+    test.expect(3);
 
     var actual = grunt.file.read('tmp/quality_test/pngquant-logo-qual2.png');
     var already_optimized = grunt.file.read('tmp/pngquant-logo-fs8.png');
@@ -131,8 +131,9 @@ exports.pngmin = {
 
     var qualityError = grunt.file.read('tmp/quality_test/haustest-qual4.png');
     var notOptimized = grunt.file.read('test/fixtures/haustest.png');
-
     test.ok(qualityError.length < notOptimized.length, 'after an error with quality option, it should be optimized without quality option!');
+
+    test.ok(!grunt.file.exists('tmp/quality_test/haustest-qual5.png'), 'after an error with quality option, if options.retry is set to false, it should not be optimized without quality option!');
 
     test.done();
   }

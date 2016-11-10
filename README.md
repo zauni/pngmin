@@ -90,6 +90,12 @@ Default value: `'pngquant'` in your `PATH` or `'bin/pngquant'`
 This option is just for users where the pngquant-bin package could not be installed correctly. Normally you don't need this!
 The pngquant executable which will be spawned. If the pngquant binary is not found in `PATH` the default fallback is `'bin/pngquant'`, but this option has always precedence.
 
+#### options.retry
+Type: `Boolean`
+Default value: `true`
+
+If pngquant exits with status 99 (ie it was not able to compress with the specified quality option), allow pngmin to try again without quality option.
+
 ### Usage Examples
 
 #### Default Options
