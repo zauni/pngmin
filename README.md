@@ -216,6 +216,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 1.2.0: Option to specify if a retry is made when pngquant exits with status 99
 - 1.1.0: Updated all dependencies to the newest versions and removed colors and transbug options
 - 1.0.3: Compatibility with grunt 1.x
 - 1.0.2: Doesn't override images if savings were 0% (now for real, 1.0.1 was incorrect)
