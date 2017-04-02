@@ -136,5 +136,17 @@ exports.pngmin = {
     test.ok(!grunt.file.exists('tmp/quality_test/haustest-qual5.png'), 'after an error with quality option, if options.retry is set to false, it should not be optimized without quality option!');
 
     test.done();
+  },
+  nofs_test: function(test) {
+    test.expect(2);
+
+    var actual = grunt.file.read('tmp/nofs_test/pngquant-logo.png');
+    var expected = grunt.file.read('test/fixtures/nofs_test/pngquant-logonofs.png');
+    var original = grunt.file.read('tmp/pngquant-logo-fs8.png');
+
+    test.ok(Math.abs(actual.length - expected.length) < 200, 'file should be roughly the same size as the fixture');
+    test.ok(actual.length < original.length, 'with nofs option the file should be smaller than a normal minimized file');
+
+    test.done();
   }
 };

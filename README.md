@@ -96,6 +96,12 @@ Default value: `true`
 
 If pngquant exits with status 99 (ie it was not able to compress with the specified quality option), allow pngmin to try again without quality option.
 
+#### options.nofs
+Type: `Boolean`
+Default value: `false`
+
+If `nofs` is set to `true` the Floyd-Steinberg dithering will be disabled.
+
 ### Usage Examples
 
 #### Default Options
@@ -195,7 +201,8 @@ grunt.initConfig({
         ext: '.png',                // use .png as extension for the optimized files
         quality: '65-80',           // output quality should be between 65 and 80 like jpeg quality
         speed: 10,                  // pngquant should be as fast as possible
-        iebug: true                 // optimize image for use in Internet Explorer 6
+        iebug: true,                // optimize image for use in Internet Explorer 6
+        nofs: true                  // disable dithering
       },
       files: [
         {
@@ -216,6 +223,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 1.3.0: Option to disable Floyd-Steinberg dithering (2017-04-02)
 - 1.2.0: Option to specify if a retry is made when pngquant exits with status 99
 - 1.1.0: Updated all dependencies to the newest versions and removed colors and transbug options
 - 1.0.3: Compatibility with grunt 1.x

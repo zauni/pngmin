@@ -67,6 +67,7 @@ module.exports = function(grunt) {
                 tries = 1;
 
             if(options.iebug) { args.push('--iebug'); }
+            if(options.nofs) { args.push('--nofs'); }
             if(qual != null) {
                 if(_.isString(qual)) {
                     args.push('--quality=' + qual);
@@ -160,7 +161,8 @@ module.exports = function(grunt) {
             force: false,
             speed: 3,
             iebug: false,
-            retry: true
+            retry: true,
+            nofs: false
         });
 
         // reset
