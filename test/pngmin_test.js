@@ -144,7 +144,7 @@ exports.pngmin = {
     var expected = grunt.file.read('test/fixtures/nofs_test/pngquant-logonofs.png');
     var original = grunt.file.read('tmp/pngquant-logo-fs8.png');
 
-    test.ok(Math.abs(actual.length - expected.length) <= 1000, 'file should be roughly the same size as the fixture');
+    test.ok(Math.abs(actual.length - expected.length) <= 2000, 'file should be roughly the same size as the fixture (+- 2 kb)');
     test.ok(actual.length < original.length, 'with nofs option the file should be smaller than a normal minimized file');
 
     test.done();
