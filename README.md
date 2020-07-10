@@ -102,6 +102,14 @@ Default value: `false`
 
 If `nofs` is set to `true` the Floyd-Steinberg dithering will be disabled.
 
+#### options.failOnError
+Type: `Boolean`
+Default value: `false`
+
+Causes the `grunt` command to also fail in case an error is encountered. For details, just add `--stack` to your `grunt` command.
+
+**Note:** This will default to `true` starting in version `2.x.x`. This was done to preserve backward compatibility (SemVer) with the current major version.
+
 ### Usage Examples
 
 #### Default Options
@@ -223,6 +231,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 1.4.0: Reporting errors when failing to run `pngquant` and added option `failOnError`. To begin failing on errors, please set `failOnError` to `true`. (2020-07-10)
 - 1.3.0: Option to disable Floyd-Steinberg dithering (2017-04-02)
 - 1.2.0: Option to specify if a retry is made when pngquant exits with status 99
 - 1.1.0: Updated all dependencies to the newest versions and removed colors and transbug options

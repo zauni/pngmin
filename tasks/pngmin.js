@@ -97,9 +97,15 @@ module.exports = function(grunt) {
                 }
 
                 if(error) {
-                    callback(error);
                     totalPercent.push(0);
-                    return;
+                    if (options.failOnError) {
+                        throw grunt.util.error('Failed when running pngquant, please use --stack for details.', error);
+                    } else {
+                        console.error('Failed when running pngquant:');
+                        console.error(error);
+                        callback(error);
+                        return;
+                    }
                 }
 
                 var oldFile = fs.statSync(src).size,
@@ -162,7 +168,8 @@ module.exports = function(grunt) {
             speed: 3,
             iebug: false,
             retry: true,
-            nofs: false
+            nofs: false,
+            failOnError: false
         });
 
         // reset
