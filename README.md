@@ -230,6 +230,16 @@ grunt.initConfig({
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
+When writing unit tests, perform the following:
+
+1. Use Node 12 or above
+1. Ensure you've got [`yarn`](https://classic.yarnpkg.com/en/docs/install/) setup and installed. Recommended method: `npm install -g yarn`
+1. Run setup: `yarn run setup`
+1. Run install: `yarn`
+1. Run tests: `yarn run test`
+   - Optionally, you can run tests (without regenerating images) via calling `nodeunit` directly from the command line.
+
+
 ## Release History
 - 1.4.0: Reporting errors when failing to run `pngquant` and added option `failOnError`. To begin failing on errors, please set `failOnError` to `true`. (2020-07-10)
 - 1.3.0: Option to disable Floyd-Steinberg dithering (2017-04-02)

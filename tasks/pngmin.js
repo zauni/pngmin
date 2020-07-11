@@ -22,6 +22,25 @@ module.exports = function(grunt) {
         options;
 
     /**
+     * Centralized error handling depending on configured options.
+     *
+     * @param {String} message              Local error that occurred.
+     * @param {Function} callback           Required in case failOnError is false.
+     * @param {Error?} optionalErrObject    The Error instance received, if available (optional).
+     */
+    function handleError(message, callback, optionalErrObject) {
+        if (options.failOnError) {
+            throw grunt.util.error(message + ' Please use --stack for details.', optionalErrObject);
+        } else {
+            grunt.log.error(message);
+            if (!!optionalErrObject) {
+                grunt.log.error(optionalErrObject);
+            }
+            callback();
+        }
+    }
+
+    /**
      * Runs pngquant binary
      * @param  {Array}   args      Command line arguments
      * @param  {Function} callback Callback
@@ -55,9 +74,8 @@ module.exports = function(grunt) {
         // optimize a temporary file
         tmp.tmpName({ postfix: '.png' }, function(error, tmpDest) {
             if(error) {
-                callback(error);
                 totalPercent.push(0);
-                return;
+                return handleError('Error optimizing temporary file.', callback, error);
             }
 
             grunt.file.copy(src, tmpDest);
@@ -98,14 +116,7 @@ module.exports = function(grunt) {
 
                 if(error) {
                     totalPercent.push(0);
-                    if (options.failOnError) {
-                        throw grunt.util.error('Failed when running pngquant, please use --stack for details.', error);
-                    } else {
-                        console.error('Failed when running pngquant:');
-                        console.error(error);
-                        callback(error);
-                        return;
-                    }
+                    return handleError('Failed when running pngquant.', callback, error);
                 }
 
                 var oldFile = fs.statSync(src).size,

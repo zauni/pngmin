@@ -1,9 +1,13 @@
+# Node stuff
 node_modules
 npm-debug.log
 tmp
 bin
 
+# IDE stuff
 *.sublime-project
 *.sublime-workspace
+.idea/
 
+# Everything else
 Thumbs.db

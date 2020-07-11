@@ -20,7 +20,8 @@
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "setup": "yarn global add nodeunit",
+    "test": "grunt test && nodeunit"
   },
   "devDependencies": {
     "grunt": "^1.0.0",
