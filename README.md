@@ -234,10 +234,9 @@ When writing unit tests, perform the following:
 
 1. Use Node 12 or above
 1. Ensure you've got [`yarn`](https://classic.yarnpkg.com/en/docs/install/) setup and installed. Recommended method: `npm install -g yarn`
-1. Run setup: `yarn run setup`
 1. Run install: `yarn`
 1. Run tests: `yarn run test`
-   - Optionally, you can run tests (without regenerating images) via calling `nodeunit` directly from the command line.
+   - Optionally, you can run tests (without regenerating images) via calling `nodeunit` directly from the command line (just install globally via `yarn add nodeunit`).
 
 
 ## Release History
