@@ -17,6 +17,9 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - yarn install --frozen-lockfile
 
+build_script:
+  - ""
+
 test_script:
   - cmd: yarn run test
 
