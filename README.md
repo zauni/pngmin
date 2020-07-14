@@ -3,7 +3,7 @@
 > Grunt plugin to compress png images with pngquant.
 
 ## Getting Started
-This plugin requires Grunt `>=0.4.0`
+This plugin requires Grunt `>=1.0.0`
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
@@ -101,6 +101,14 @@ Type: `Boolean`
 Default value: `false`
 
 If `nofs` is set to `true` the Floyd-Steinberg dithering will be disabled.
+
+#### options.failOnError
+Type: `Boolean`
+Default value: `false`
+
+Causes the `grunt` command to also fail in case an error is encountered. For details, just add `--stack` to your `grunt` command.
+
+**Note:** This will default to `true` starting in version `2.x.x`. This was done to preserve backward compatibility (SemVer) with the current major version.
 
 ### Usage Examples
 
@@ -222,7 +230,17 @@ grunt.initConfig({
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
+When writing unit tests, perform the following:
+
+1. Use Node 12 or above
+1. Ensure you've got [`yarn`](https://classic.yarnpkg.com/en/docs/install/) setup and installed. Recommended method: `npm install -g yarn`
+1. Run install: `yarn`
+1. Run tests: `yarn run test`
+   - Optionally, you can run tests (without regenerating images) via calling `nodeunit` directly from the command line (just install globally via `yarn add nodeunit`).
+
+
 ## Release History
+- 1.4.0: Reporting errors when failing to run `pngquant` and added option `failOnError`. To begin failing on errors, please set `failOnError` to `true`. (2020-07-10 via [#21](https://github.com/zauni/pngmin/issues/21))
 - 1.3.0: Option to disable Floyd-Steinberg dithering (2017-04-02)
 - 1.2.0: Option to specify if a retry is made when pngquant exits with status 99
 - 1.1.0: Updated all dependencies to the newest versions and removed colors and transbug options
@@ -232,7 +250,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 - 1.0.0: Linux support with imagemin/pngquant-bin and travis CI integration
 - 0.6.4: Reverted some code from 0.6.3 and fixed one unit test
 - 0.6.3: Couple of fixes to prevent the reduce errors
-- 0.6.2: If pngquant exits with status 99, pngmin will try again without quality option (fixes #9)
+- 0.6.2: If pngquant exits with status 99, pngmin will try again without quality option (fixes [#9](https://github.com/zauni/pngmin/issues/9))
 - 0.6.1: Added postinstall script to change permission on the OS X pngquant binary
 - 0.6.0: pngquant binary is now included for windows and mac users (no additional pngquant installation need)
 - 0.5.1: Fixed potential issue with quality option
