@@ -155,6 +155,7 @@ describe("pngmin", () => {
     });
 
     const images = await readdir("tmp/multiple");
+    console.log(log);
 
     assert.ok(images.length === 10, "10 images should be optimized.");
     assert.match(
