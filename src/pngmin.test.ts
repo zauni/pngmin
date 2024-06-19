@@ -1,9 +1,12 @@
 import grunt from "grunt";
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
+import { rimraf } from "rimraf";
 
 describe("pngmin", () => {
   it("should optimize png images with pngquant", async () => {
+    await rimraf("foo2");
+
     // @ts-expect-error `grunt.task.init` is not in the type definition
     grunt.task.init = () => {};
     grunt.loadTasks("tasks");

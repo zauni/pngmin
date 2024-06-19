@@ -6,7 +6,16 @@ import typescript from "@rollup/plugin-typescript";
 export default [
   {
     input: "src/pngmin.ts",
-    external: ["pngquant-bin"],
+    external: [
+      "chalk",
+      "copy-file",
+      "execa",
+      "filesize",
+      "p-limit",
+      "pngquant-bin",
+      "tmp",
+      "which",
+    ],
     output: {
       file: "tasks/pngmin.cjs",
       format: "cjs",

@@ -24,8 +24,6 @@ export default function (grunt: IGrunt) {
     async function () {
       const done = this.async();
 
-      console.log("binPath", await getBinPath());
-
       // Merge task-specific and/or target-specific options with these defaults.
       const options: Options = this.options({
         binary: await getBinPath(),
