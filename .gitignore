@@ -12,3 +12,4 @@ bin
 
 # Everything else
 Thumbs.db
+.DS_Store
