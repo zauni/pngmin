@@ -1,14 +1,13 @@
-# For more information about the properties used in this file,
-# please see the EditorConfig documentation:
-# http://editorconfig.org
+# Editor configuration, see https://editorconfig.org
+root = true
 
-[*.js]
+[*]
 charset = utf-8
-end_of_line = lf
-indent_size = 4
 indent_style = space
+indent_size = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[{*.yml,*.yaml,*.json}]
-indent_size = 2
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false

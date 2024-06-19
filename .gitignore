@@ -8,6 +8,7 @@ bin
 *.sublime-project
 *.sublime-workspace
 .idea/
+.vscode/
 
 # Everything else
 Thumbs.db

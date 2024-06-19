@@ -3,6 +3,7 @@
 > Grunt plugin to compress png images with pngquant.
 
 ## Getting Started
+
 This plugin requires Grunt `>=1.0.0`
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
@@ -14,7 +15,7 @@ npm install grunt-pngmin --save-dev
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('grunt-pngmin');
+grunt.loadNpmTasks("grunt-pngmin");
 ```
 
 Windows, Linux and Mac OSX is supported out of the box.
@@ -22,6 +23,7 @@ Windows, Linux and Mac OSX is supported out of the box.
 ## The "pngmin" task
 
 ### Overview
+
 In your project's Gruntfile, add a section named `pngmin` to the data object passed into `grunt.initConfig()`.
 
 ```js
@@ -34,56 +36,64 @@ grunt.initConfig({
       // Target-specific file lists and/or options go here.
     },
   },
-})
+});
 ```
 
 ### Options
 
 #### options.concurrency
+
 Type: `Number`
 Default value: `4`
 
 How many executables will be spawned in parallel.
 
 #### options.ext
+
 Type: `String`
 Default value: `'-fs8.png'`
 
 The file extension after the quantization.
 
 #### options.quality
+
 Type: `String`, `Object` or `Array`
 Default value: `null`
 
 Instructs pngquant to use the least amount of colors required to meet or exceed the max quality.
 If conversion results in quality below the min quality the image won't be saved.
 Specify quality like that:
-* String: `'min-max'`
-* Object: `{min: min, max: max}`
-* Array: `[min, max]`
+
+- String: `'min-max'`
+- Object: `{min: min, max: max}`
+- Array: `[min, max]`
 
 min and max are numbers in range 0 (worst) to 100 (perfect), similar to JPEG.
 For example as object: `{min: 60, max: 80}`.
 
 #### options.force
+
 Type: `Boolean`
 Default value: `false`
 
 Should existing files be overwritten by the optimized version? Be careful with this option if you need the original files!
 
 #### options.speed
+
 Type: `Number`
 Default value: `3`
 
 Speed/quality trade-off from 1 (brute-force) to 10 (fastest). Speed 10 has 5% lower quality, but is 8 times faster than the default.
 
 #### options.iebug
+
 Type: `Boolean`
 Default value: `false`
 
 Workaround for IE6, which only displays fully opaque pixels. pngquant will make almost-opaque pixels fully opaque and will avoid creating new transparent colors.
 
 #### options.binary
+
 Type: `String`
 Default value: `'pngquant'` in your `PATH` or `'bin/pngquant'`
 
@@ -91,18 +101,21 @@ This option is just for users where the pngquant-bin package could not be instal
 The pngquant executable which will be spawned. If the pngquant binary is not found in `PATH` the default fallback is `'bin/pngquant'`, but this option has always precedence.
 
 #### options.retry
+
 Type: `Boolean`
 Default value: `true`
 
 If pngquant exits with status 99 (ie it was not able to compress with the specified quality option), allow pngmin to try again without quality option.
 
 #### options.nofs
+
 Type: `Boolean`
 Default value: `false`
 
 If `nofs` is set to `true` the Floyd-Steinberg dithering will be disabled.
 
 #### options.failOnError
+
 Type: `Boolean`
 Default value: `false`
 
@@ -113,6 +126,7 @@ Causes the `grunt` command to also fail in case an error is encountered. For det
 ### Usage Examples
 
 #### Default Options
+
 In this example `image.png` will be optimized, copied to `dest` folder and renamed to `image-fs8.png`.
 
 ```js
@@ -122,16 +136,17 @@ grunt.initConfig({
       options: {},
       files: [
         {
-          src: 'path/to/image.png',
-          dest: 'dest/'
-        }
-      ]
-    }
-  }
+          src: "path/to/image.png",
+          dest: "dest/",
+        },
+      ],
+    },
+  },
 });
 ```
 
 #### Custom Options
+
 In this example `image.png` will be optimized and copied to `dest` folder.
 
 ```js
@@ -139,16 +154,16 @@ grunt.initConfig({
   pngmin: {
     compile: {
       options: {
-        ext: '.png'
+        ext: ".png",
       },
       files: [
         {
-          src: 'path/to/image.png',
-          dest: 'dest/'
-        }
-      ]
-    }
-  }
+          src: "path/to/image.png",
+          dest: "dest/",
+        },
+      ],
+    },
+  },
 });
 ```
 
@@ -159,21 +174,22 @@ grunt.initConfig({
   pngmin: {
     compile: {
       options: {
-        ext: '.png',
-        force: true
+        ext: ".png",
+        force: true,
       },
       files: [
         {
-          src: 'path/to/image.png',
-          dest: 'path/to/'
-        }
-      ]
-    }
-  }
+          src: "path/to/image.png",
+          dest: "path/to/",
+        },
+      ],
+    },
+  },
 });
 ```
 
 #### Example which is preserving the subfolder structure
+
 In this example all images in the folder `path/to/images/` and its subfolders will be optimized and copied to `dest` while preserving the directory structure.
 See http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically for more options.
 
@@ -182,22 +198,23 @@ grunt.initConfig({
   pngmin: {
     compile: {
       options: {
-        ext: '.png'
+        ext: ".png",
       },
       files: [
         {
           expand: true, // required option
-          src: ['**/*.png'],
-          cwd: 'path/to/images/', // required option
-          dest: 'dest/'
-        }
-      ]
-    }
-  }
+          src: ["**/*.png"],
+          cwd: "path/to/images/", // required option
+          dest: "dest/",
+        },
+      ],
+    },
+  },
 });
 ```
 
 #### Complex example
+
 This is a complex example with a lot of options set:
 
 ```js
@@ -205,41 +222,41 @@ grunt.initConfig({
   pngmin: {
     compile: {
       options: {
-        concurrency: 8,             // specify how many exucutables get spawned in parallel
-        ext: '.png',                // use .png as extension for the optimized files
-        quality: '65-80',           // output quality should be between 65 and 80 like jpeg quality
-        speed: 10,                  // pngquant should be as fast as possible
-        iebug: true,                // optimize image for use in Internet Explorer 6
-        nofs: true                  // disable dithering
+        concurrency: 8, // specify how many exucutables get spawned in parallel
+        ext: ".png", // use .png as extension for the optimized files
+        quality: "65-80", // output quality should be between 65 and 80 like jpeg quality
+        speed: 10, // pngquant should be as fast as possible
+        iebug: true, // optimize image for use in Internet Explorer 6
+        nofs: true, // disable dithering
       },
       files: [
         {
-          src: 'path/to/images/*.png',
-          dest: 'dest/'
+          src: "path/to/images/*.png",
+          dest: "dest/",
         },
         {
-          src: 'path/to/other/images/*.png',
-          dest: 'another/dest/'
-        }
-      ]
-    }
-  }
+          src: "path/to/other/images/*.png",
+          dest: "another/dest/",
+        },
+      ],
+    },
+  },
 });
 ```
 
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code.
 
 When writing unit tests, perform the following:
 
-1. Use Node 12 or above
-1. Ensure you've got [`yarn`](https://classic.yarnpkg.com/en/docs/install/) setup and installed. Recommended method: `npm install -g yarn`
-1. Run install: `yarn`
-1. Run tests: `yarn run test`
-   - Optionally, you can run tests (without regenerating images) via calling `nodeunit` directly from the command line (just install globally via `yarn add nodeunit`).
-
+1. Ensure you've got [`Node 20+`](https://nodejs.org/en/download/package-manager) setup and installed.
+1. Run install: `npm install`
+1. Run tests: `npm run test`
 
 ## Release History
+
+- 2.0.0: Rewrite in TypeScript and update of all dependencies
 - 1.4.0: Reporting errors when failing to run `pngquant` and added option `failOnError`. To begin failing on errors, please set `failOnError` to `true`. (2020-07-10 via [#21](https://github.com/zauni/pngmin/issues/21))
 - 1.3.0: Option to disable Floyd-Steinberg dithering (2017-04-02)
 - 1.2.0: Option to specify if a retry is made when pngquant exits with status 99
