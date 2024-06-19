@@ -5,7 +5,6 @@ import { getBinPath, optimizeImage, runPngquant } from "./utils.js";
 describe("utils", () => {
   it("should get the correct pngquant executable path", async () => {
     const binPath = await getBinPath();
-    console.log("binPath", binPath);
     assert.ok(binPath);
   });
 
