@@ -50,7 +50,7 @@ describe("pngmin", () => {
       ],
     });
 
-    assert.match(log, /Optimized tmp\/pngquant-logo-fs8\.png/);
+    assert.match(log, /Optimized tmp(\/|\\)pngquant-logo-fs8\.png/);
   });
 
   it("should optimize png images with a custom extension", async () => {
@@ -66,6 +66,6 @@ describe("pngmin", () => {
       ],
     });
 
-    assert.match(log, /Optimized tmp\/pngquant-logo-custom\.png/);
+    assert.match(log, /Optimized tmp(\/|\\)pngquant-logo-custom\.png/);
   });
 });
