@@ -13,3 +13,5 @@ bin
 # Everything else
 Thumbs.db
 .DS_Store
+
+tasks/pngmin.cjs
