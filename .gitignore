@@ -8,6 +8,10 @@ bin
 *.sublime-project
 *.sublime-workspace
 .idea/
+.vscode/
 
 # Everything else
 Thumbs.db
+.DS_Store
+
+tasks/pngmin.cjs
