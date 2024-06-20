@@ -1,9 +1,9 @@
 {
-	"extends": "@tsconfig/node20/tsconfig.json",
-	"compilerOptions": {
-		"module": "Node16",
-		"noFallthroughCasesInSwitch": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true
-	}
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "module": "Node16",
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  }
 }

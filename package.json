@@ -8,9 +8,9 @@
     "test": "npm run build && npm run test:run",
     "test:run": "glob -c \"tsx --test\" \"./src/**/*.test.ts\"",
     "test:run:only": "glob -c \"tsx --test --test-only\" \"./src/**/*.test.ts\"",
-    "lint": "biome check ./src && tsc --noEmit",
-    "format": "biome format ./src --write",
-    "fix": "biome check ./src --write"
+    "lint": "biome check . && tsc --noEmit",
+    "format": "biome format . --write",
+    "fix": "biome check . --write"
   },
   "files": ["tasks", "LICENSE-MIT", "README.md", "package.json"],
   "dependencies": {
