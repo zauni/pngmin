@@ -1,4 +1,6 @@
-# grunt-pngmin [![Build Status Linux](https://travis-ci.org/zauni/pngmin.svg)](https://travis-ci.org/zauni/pngmin) [![Build Status Windows](https://ci.appveyor.com/api/projects/status/github/zauni/pngmin?svg=true)](https://ci.appveyor.com/project/zauni/pngmin)
+# grunt-pngmin
+
+<a href="https://github.com/zauni/pngmin/actions/workflows/ci.yml"><img src="https://github.com/zauni/pngmin/actions/workflows/ci.yml/badge.svg?branch=master" alt="build status"></a>
 
 > Grunt plugin to compress png images with pngquant.
 
