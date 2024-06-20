@@ -373,7 +373,7 @@ describe("pngmin", () => {
 
     assert.ok(
       Math.abs(actual - expected) <= 2000,
-      "file should be roughly the same size as the fixture (+- 2 kb)",
+      `file should be roughly the same size as the fixture (+- 2 kb) but is ${Math.abs(actual - expected)}`,
     );
     assert.ok(
       actual < original,
