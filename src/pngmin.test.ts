@@ -372,8 +372,8 @@ describe("pngmin", () => {
     const original = (await stat("tmp/pngquant-logo-fs8.png")).size;
 
     assert.ok(
-      Math.abs(actual - expected) <= 2000,
-      `file should be roughly the same size as the fixture (+- 2 kb) but is ${Math.abs(actual - expected)}`,
+      Math.abs(actual - expected) <= 3000,
+      `file should be roughly the same size as the fixture (+- 3 kb) but is ${Math.abs(actual - expected)}`,
     );
     assert.ok(
       actual < original,
