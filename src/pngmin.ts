@@ -6,16 +6,16 @@
  * Licensed under the MIT license.
  */
 
+import chalk from "chalk";
 import { filesize } from "filesize";
 import path from "node:path";
-import pLimit from "p-limit";
+import pAll from "p-all";
 import {
   getBinPath,
   optimizeImage,
   type ImageFile,
   type Options,
 } from "./utils.js";
-import chalk from "chalk";
 
 export default function (grunt: IGrunt) {
   grunt.registerMultiTask(
@@ -35,12 +35,10 @@ export default function (grunt: IGrunt) {
         iebug: false,
         retry: true,
         nofs: false,
-        failOnError: false,
+        failOnError: true,
       } satisfies Options);
 
       grunt.log.verbose.writeflags(options);
-
-      const limit = pLimit(options.concurrency);
 
       const fileQueue = this.files.flatMap((f): ImageFile[] => {
         let dest = f.dest;
@@ -87,10 +85,11 @@ export default function (grunt: IGrunt) {
       }
 
       try {
-        const results = await Promise.all(
-          fileQueue.map((file) =>
-            limit(() => optimizeImage(file, grunt.log, options)),
+        const results = await pAll(
+          fileQueue.map(
+            (file) => () => optimizeImage(file, grunt.log, options),
           ),
+          { concurrency: options.concurrency, stopOnError: false },
         );
 
         let totalSize = 0;
@@ -108,13 +107,18 @@ export default function (grunt: IGrunt) {
           `Overall savings: ${chalk.green(`${avg} %`)} | ${chalk.green(filesize(totalSize))}`,
         );
       } catch (error) {
-        if (options.failOnError) {
-          throw grunt.util.error(
-            `${error} Please use --stack for details.`,
-            error instanceof Error ? error : undefined,
-          );
+        if (error instanceof AggregateError) {
+          for (const e of error.errors) {
+            grunt.log.error(`Aggregated error: ${e}`);
+          }
+        } else {
+          grunt.log.error(`${error}`);
         }
-        grunt.log.error(`${error}`);
+
+        if (options.failOnError) {
+          done(error);
+          return;
+        }
       }
 
       done();

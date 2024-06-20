@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "rollup -c",
-    "test": "glob -c \"tsx --test\" \"./src/**/*.test.ts\""
+    "test": "npm run build && npm run test:run",
+    "test:run": "glob -c \"tsx --test\" \"./src/**/*.test.ts\"",
+    "test:run:only": "glob -c \"tsx --test --test-only\" \"./src/**/*.test.ts\""
   },
   "files": ["tasks", "LICENSE-MIT", "README.md", "package.json"],
   "dependencies": {
@@ -13,6 +15,7 @@
     "copy-file": "^11.0.0",
     "execa": "^9.2.0",
     "filesize": "^10.1.2",
+    "p-all": "^5.0.0",
     "p-limit": "^4.0.0",
     "pngquant-bin": "^9.0.0",
     "tmp": "^0.2.3",

@@ -11,7 +11,7 @@ export default [
       "copy-file",
       "execa",
       "filesize",
-      "p-limit",
+      "p-all",
       "pngquant-bin",
       "tmp",
       "which",

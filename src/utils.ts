@@ -9,25 +9,36 @@ import nodePngquantPath from "pngquant-bin";
 import tmp, { type TmpNameCallback, type TmpNameOptions } from "tmp";
 import which from "which";
 
+/**
+ * Options for the task
+ */
 export type Options = {
+  /** Should the whole grunt task fail in case of a pngquant failure */
   failOnError: boolean;
+  /** Path to a pngquant binary */
   binary: string;
+  /** How many pnquant executions should run concurrently */
   concurrency: number;
+  /** Extension like '.png' */
   ext: string;
+  /** Quality of the result: won't save below min, use fewer colors below max (0-100) */
   quality: null | string | { min: number; max: number } | number[];
+  /** Should a existing destination file be overwritten */
   force: boolean;
+  /** Speed/quality trade-off. 1=slow, 4=default, 11=fast & rough */
   speed: number;
+  /** Enable workaround for IE6 */
   iebug: boolean;
+  /** Should we retry a failed pngquant run (99 exit code) without quality option */
   retry: boolean;
+  /** Disable Floyd-Steinberg dithering */
   nofs: boolean;
 };
 
 export type ImageFile = {
   /** Source path and filename */
   src: string;
-  /**
-   * Destination path without filename
-   */
+  /** Destination path without filename */
   dest: string;
 };
 
@@ -72,7 +83,7 @@ export async function getBinPath(): Promise<string> {
  *
  * @param args Command line arguments
  * @param log Logger
- * @param binaryPath optional path to the pngquant binary (takes precedence over the node module)
+ * @param options Options from the task
  */
 export async function runPngquant(
   args: string[],
@@ -88,12 +99,6 @@ export async function runPngquant(
   return await execa`${pngquant} ${args}`;
 }
 
-// await optimizeImage(
-//   { src: "", dest: "" },
-//   { writeln: () => {} },
-//   { binary: "", ext: "" },
-// );
-
 export type Savings = {
   savingsPercent: number;
   savingsSize: number;
@@ -101,8 +106,11 @@ export type Savings = {
 
 const noSavings = { savingsPercent: 0, savingsSize: 0 };
 
-async function createTmpFile(): Promise<AsyncDisposable & { path: string }> {
+export async function createTmpFile(): Promise<
+  AsyncDisposable & { path: string }
+> {
   const path = await tmpName({ postfix: ".png" });
+  await fs.appendFile(path, "");
 
   return {
     path,
@@ -146,6 +154,65 @@ export async function optimizeImage(
 
   await copyFile(src, tmpDest);
 
+  const args = createPngquantArgs(options, tmpDest);
+
+  try {
+    await runPngquant(args, log, options);
+  } catch (err) {
+    if (options.retry && err instanceof ExecaError && err.exitCode === 99) {
+      log.writeln(
+        `${chalk.yellow(realDest)} could not be optimized with quality option. Trying again without quality option!`,
+      );
+
+      try {
+        await runPngquant(
+          args.filter((arg) => !arg.includes("--quality")),
+          log,
+          options,
+        );
+      } catch (innerErr) {
+        throw new Error(
+          `Failed when running pngquant after retrying. ${innerErr}`,
+          {
+            cause: innerErr,
+          },
+        );
+      }
+    } else {
+      throw new Error(`Failed when running pngquant. ${err}`, {
+        cause: err,
+      });
+    }
+  }
+
+  const oldFile = (await fs.stat(src)).size;
+  const newFile = (await fs.stat(tmpDest)).size;
+  const savings = Math.floor(((oldFile - newFile) / oldFile) * 100);
+
+  if (savings > 0) {
+    await copyFile(tmpDest, realDest);
+
+    log.writeln(
+      `Optimized ${chalk.cyan(realDest)} [saved ${savings} % - ${filesize(oldFile)} → ${filesize(newFile)}]`,
+    );
+
+    return {
+      savingsPercent: savings,
+      savingsSize: oldFile - newFile,
+    };
+  }
+
+  if (!realDestExists) {
+    await copyFile(src, realDest);
+  }
+
+  log.writeln(
+    `Optimization would increase file size by ${savings * -1} % so optimization was skipped on file ${realDest.yellow}`,
+  );
+  return noSavings;
+}
+
+export function createPngquantArgs(options: Options, dest: string): string[] {
   const args: string[] = [];
   const qual = options.quality;
 
@@ -175,57 +242,7 @@ export async function optimizeImage(
     }
   }
 
-  args.push("--ext=.png", "--force", `--speed=${options.speed}`, "--", tmpDest);
+  args.push("--ext=.png", "--force", `--speed=${options.speed}`, "--", dest);
 
-  try {
-    await runPngquant(args, log, options);
-  } catch (err) {
-    if (options.retry && err instanceof ExecaError && err.code === "99") {
-      log.writeln(
-        `${realDest.yellow} could not be optimized with quality option. Trying again without quality option!`,
-      );
-
-      try {
-        await runPngquant(
-          args.filter((arg) => arg.includes("--quality")),
-          log,
-          options,
-        );
-      } catch (innerErr) {
-        throw new Error("Failed when running pngquant after retrying.", {
-          cause: innerErr,
-        });
-      }
-    }
-
-    throw new Error("Failed when running pngquant.", {
-      cause: err,
-    });
-  }
-
-  const oldFile = (await fs.stat(src)).size;
-  const newFile = (await fs.stat(tmpDest)).size;
-  const savings = Math.floor(((oldFile - newFile) / oldFile) * 100);
-
-  if (savings > 0) {
-    await copyFile(tmpDest, realDest);
-
-    log.writeln(
-      `Optimized ${chalk.cyan(realDest)} [saved ${savings} % - ${filesize(oldFile)} → ${filesize(newFile)}]`,
-    );
-
-    return {
-      savingsPercent: savings,
-      savingsSize: oldFile - newFile,
-    };
-  }
-
-  if (!realDestExists) {
-    await copyFile(src, realDest);
-  }
-
-  log.writeln(
-    `Optimization would increase file size by ${savings * -1} % so optimization was skipped on file ${realDest.yellow}`,
-  );
-  return noSavings;
+  return args;
 }

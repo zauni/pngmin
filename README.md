@@ -117,11 +117,10 @@ If `nofs` is set to `true` the Floyd-Steinberg dithering will be disabled.
 #### options.failOnError
 
 Type: `Boolean`
-Default value: `false`
+Default value: `true`
 
 Causes the `grunt` command to also fail in case an error is encountered. For details, just add `--stack` to your `grunt` command.
 
-**Note:** This will default to `true` starting in version `2.x.x`. This was done to preserve backward compatibility (SemVer) with the current major version.
 
 ### Usage Examples
 
@@ -256,7 +255,11 @@ When writing unit tests, perform the following:
 
 ## Release History
 
-- 2.0.0: Rewrite in TypeScript and update of all dependencies
+- 2.0.0: Complete rewrite in TypeScript and update of all dependencies (2024-06-20)  
+  **BREAKING CHANGES:**  
+  - `failOnError` option is now `true` by default
+  - Requires Node.js 18+
+  - Requires Grunt.js 1.0+
 - 1.4.0: Reporting errors when failing to run `pngquant` and added option `failOnError`. To begin failing on errors, please set `failOnError` to `true`. (2020-07-10 via [#21](https://github.com/zauni/pngmin/issues/21))
 - 1.3.0: Option to disable Floyd-Steinberg dithering (2017-04-02)
 - 1.2.0: Option to specify if a retry is made when pngquant exits with status 99
