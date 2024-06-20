@@ -1,21 +1,15 @@
-import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import resolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
+import { readFile } from "node:fs/promises";
+
+const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
 /** @type {import('rollup').RollupOptions[]} */
 export default [
   {
     input: "src/pngmin.ts",
-    external: [
-      "chalk",
-      "copy-file",
-      "execa",
-      "filesize",
-      "p-all",
-      "pngquant-bin",
-      "tmp",
-      "which",
-    ],
+    external: pkg.dependencies ? Object.keys(pkg.dependencies) : undefined,
     output: {
       file: "tasks/pngmin.cjs",
       format: "cjs",

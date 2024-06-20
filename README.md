@@ -255,7 +255,7 @@ When writing unit tests, perform the following:
 
 ## Release History
 
-- 2.0.0: Complete rewrite in TypeScript and update of all dependencies (2024-06-20)  
+- 2.0.0: Complete rewrite in TypeScript and update of all dependencies (to their latest CJS versions. ESM is not supported by Grunt) (2024-06-20)  
   **BREAKING CHANGES:**  
   - `failOnError` option is now `true` by default
   - Requires Node.js 18+

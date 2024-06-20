@@ -7,17 +7,19 @@
     "build": "rollup -c",
     "test": "npm run build && npm run test:run",
     "test:run": "glob -c \"tsx --test\" \"./src/**/*.test.ts\"",
-    "test:run:only": "glob -c \"tsx --test --test-only\" \"./src/**/*.test.ts\""
+    "test:run:only": "glob -c \"tsx --test --test-only\" \"./src/**/*.test.ts\"",
+    "lint": "biome check ./src && tsc --noEmit",
+    "format": "biome format ./src --write",
+    "fix": "biome check ./src --write"
   },
   "files": ["tasks", "LICENSE-MIT", "README.md", "package.json"],
   "dependencies": {
-    "chalk": "^5.3.0",
-    "copy-file": "^11.0.0",
-    "execa": "^9.2.0",
+    "chalk": "^4.1.2",
+    "cp-file": "^9.1.0",
+    "execa": "^5.1.1",
     "filesize": "^10.1.2",
-    "p-all": "^5.0.0",
-    "p-limit": "^4.0.0",
-    "pngquant-bin": "^9.0.0",
+    "p-all": "^3.0.0",
+    "pngquant-bin": "^6.0.1",
     "tmp": "^0.2.3",
     "which": "^4.0.0"
   },

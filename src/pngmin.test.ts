@@ -1,8 +1,8 @@
-import { copyFile } from "copy-file";
-import grunt from "grunt";
 import { strict as assert } from "node:assert";
 import { readdir, stat } from "node:fs/promises";
 import { before, describe, it } from "node:test";
+import copyFile from "cp-file";
+import grunt from "grunt";
 import { rimraf } from "rimraf";
 import type { Options } from "./utils.js";
 
@@ -351,7 +351,7 @@ describe("pngmin", () => {
     );
     assert.match(
       log2,
-      /Failed when running pngquant. ExecaError: Command failed with exit code 99/,
+      /Failed when running pngquant. Error: Command failed with exit code 99/,
     );
   });
 

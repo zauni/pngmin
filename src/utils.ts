@@ -1,10 +1,10 @@
-import chalk from "chalk";
-import { copyFile } from "copy-file";
-import { ExecaError, execa } from "execa";
-import { filesize } from "filesize";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
+import chalk from "chalk";
+import copyFile from "cp-file";
+import execa from "execa";
+import { filesize } from "filesize";
 import nodePngquantPath from "pngquant-bin";
 import tmp, { type TmpNameCallback, type TmpNameOptions } from "tmp";
 import which from "which";
@@ -42,7 +42,10 @@ export type ImageFile = {
   dest: string;
 };
 
-export type Logger = { writeln: (msg: string) => void };
+export type Logger = {
+  writeln: (msg: string) => void;
+  verbose: { writeln: (msg: string) => void };
+};
 
 const tmpName = promisify((options: TmpNameOptions, cb: TmpNameCallback) =>
   tmp.tmpName(options, cb),
@@ -92,11 +95,11 @@ export async function runPngquant(
 ) {
   const pngquant = options.binary;
 
-  log.writeln(
+  log.verbose.writeln(
     `Trying to spawn "${pngquant}" with arguments: ${args.join(" ")}`,
   );
 
-  return await execa`${pngquant} ${args}`;
+  return await execa(pngquant, args);
 }
 
 export type Savings = {
@@ -159,7 +162,12 @@ export async function optimizeImage(
   try {
     await runPngquant(args, log, options);
   } catch (err) {
-    if (options.retry && err instanceof ExecaError && err.exitCode === 99) {
+    if (
+      options.retry &&
+      err instanceof Error &&
+      "exitCode" in err &&
+      err.exitCode === 99
+    ) {
       log.writeln(
         `${chalk.yellow(realDest)} could not be optimized with quality option. Trying again without quality option!`,
       );

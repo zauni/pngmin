@@ -6,15 +6,15 @@
  * Licensed under the MIT license.
  */
 
+import path from "node:path";
 import chalk from "chalk";
 import { filesize } from "filesize";
-import path from "node:path";
 import pAll from "p-all";
 import {
-  getBinPath,
-  optimizeImage,
   type ImageFile,
   type Options,
+  getBinPath,
+  optimizeImage,
 } from "./utils.js";
 
 export default function (grunt: IGrunt) {
