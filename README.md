@@ -257,6 +257,8 @@ When writing unit tests, perform the following:
 
 ## Release History
 
+- 2.0.3: Switch from chalk to yoctocolors for smaller install size (2024-06-30)
+- 2.0.2: Build system switch from Rollup to [tsup](https://tsup.egoist.dev/) (2024-06-24)
 - 2.0.0: Complete rewrite in TypeScript and update of all dependencies (to their latest CJS versions. ESM is not supported by Grunt) (2024-06-20)  
   **BREAKING CHANGES:**  
   - `failOnError` option is now `true` by default
