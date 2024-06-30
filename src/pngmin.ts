@@ -7,9 +7,9 @@
  */
 
 import path from "node:path";
-import chalk from "chalk";
 import { filesize } from "filesize";
 import pAll from "p-all";
+import colors from "yoctocolors-cjs";
 import {
   type ImageFile,
   type Options,
@@ -71,7 +71,7 @@ export default function (grunt: IGrunt) {
 
         if (files.length === 0) {
           grunt.log.writeln(
-            `No images were found in this path(s): ${chalk.cyan((f.src ?? []).join(", "))}`,
+            `No images were found in this path(s): ${colors.cyan((f.src ?? []).join(", "))}`,
           );
         }
 
@@ -104,7 +104,7 @@ export default function (grunt: IGrunt) {
           results.length > 0 ? Math.floor(totalPercent / results.length) : 0;
 
         grunt.log.writeln(
-          `Overall savings: ${chalk.green(`${avg} %`)} | ${chalk.green(filesize(totalSize))}`,
+          `Overall savings: ${colors.green(`${avg} %`)} | ${colors.green(filesize(totalSize))}`,
         );
       } catch (error) {
         if (error instanceof AggregateError) {

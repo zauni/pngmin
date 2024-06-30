@@ -1,13 +1,13 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
-import chalk from "chalk";
 import copyFile from "cp-file";
 import execa from "execa";
 import { filesize } from "filesize";
 import nodePngquantPath from "pngquant-bin";
 import tmp, { type TmpNameCallback, type TmpNameOptions } from "tmp";
 import which from "which";
+import colors from "yoctocolors-cjs";
 
 /**
  * Options for the task
@@ -147,7 +147,7 @@ export async function optimizeImage(
 
   if (realDestExists && !options.force) {
     log.writeln(
-      `Optimization skipped on ${chalk.cyan(src)} because it exists in destination. (force option is false!)`,
+      `Optimization skipped on ${colors.cyan(src)} because it exists in destination. (force option is false!)`,
     );
     return noSavings;
   }
@@ -169,7 +169,7 @@ export async function optimizeImage(
       err.exitCode === 99
     ) {
       log.writeln(
-        `${chalk.yellow(realDest)} could not be optimized with quality option. Trying again without quality option!`,
+        `${colors.yellow(realDest)} could not be optimized with quality option. Trying again without quality option!`,
       );
 
       try {
@@ -201,7 +201,7 @@ export async function optimizeImage(
     await copyFile(tmpDest, realDest);
 
     log.writeln(
-      `Optimized ${chalk.cyan(realDest)} [saved ${savings} % - ${filesize(oldFile)} → ${filesize(newFile)}]`,
+      `Optimized ${colors.cyan(realDest)} [saved ${savings} % - ${filesize(oldFile)} → ${filesize(newFile)}]`,
     );
 
     return {

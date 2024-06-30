@@ -14,14 +14,14 @@
   },
   "files": ["tasks", "LICENSE-MIT", "README.md", "package.json"],
   "dependencies": {
-    "chalk": "^4.1.2",
     "cp-file": "^9.1.0",
     "execa": "^5.1.1",
     "filesize": "^10.1.2",
     "p-all": "^3.0.0",
     "pngquant-bin": "^6.0.1",
     "tmp": "^0.2.3",
-    "which": "^4.0.0"
+    "which": "^4.0.0",
+    "yoctocolors-cjs": "^2.1.1"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.1",
